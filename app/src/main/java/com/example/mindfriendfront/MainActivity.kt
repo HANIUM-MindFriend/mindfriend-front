@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         // 메뉴 열기 버튼 클릭 시 동작 추가
         btnMenu.setOnClickListener {
             // 메뉴를 열기 위한 동작 구현
+
         }
 
         // 분석 버튼 클릭 시 동작 추가
@@ -43,11 +44,9 @@ class MainActivity : AppCompatActivity() {
             // 마이페이지로 이동하는 동작 구현
         }
 
-
         btnAnalysis.setBackgroundColor(Color.parseColor("#7ea9fd"))
         btnHome.setBackgroundColor(Color.parseColor("#7ea9fd"))
         btnMyPage.setBackgroundColor(Color.parseColor("#7ea9fd"))
-
         btnMenu.setCompoundDrawablesWithIntrinsicBounds(R.drawable.menu, 0, 0, 0)
         btnAnalysis.setCompoundDrawablesWithIntrinsicBounds(R.drawable.analysis, 0, 0, 0)
         btnHome.setCompoundDrawablesWithIntrinsicBounds(R.drawable.home, 0, 0, 0)
