@@ -29,19 +29,19 @@
         </provider>
 
         <activity
-            android:name=".Calendar"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivity2"
             android:exported="false" />
         <activity
             android:name=".Calendar"
             android:exported="false" />
         <activity
             android:name=".Picture"
-            android:name=".MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".DayInfo"
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
