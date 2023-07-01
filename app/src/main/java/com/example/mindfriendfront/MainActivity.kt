@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // 분석 버튼 클릭 시 동작 추가
         btnAnalysis.setOnClickListener {
             // 분석 화면으로 이동하는 동작 구현
-
+            setContentView(R.layout.activity_chat)
         }
 
         // 홈 버튼 클릭 시 동작 추가
