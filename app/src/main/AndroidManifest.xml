@@ -41,6 +41,7 @@
         <activity
             android:name=".Picture"
             android:name=".MainActivity2"
+            android:name=".DayInfo"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
