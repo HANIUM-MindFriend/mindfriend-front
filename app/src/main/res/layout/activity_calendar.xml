@@ -6,22 +6,66 @@
     android:layout_height="match_parent"
     tools:context="com.example.mindfriendfront.Calendar">
 
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="350dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_rectangle"
+        android:orientation="vertical"
+        android:gravity="start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.188">
-        <!-- 내용을 추가합니다 -->
+        app:layout_constraintVertical_bias="0.15">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="일일 미션"
+            android:textColor="#FF18308D"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            android:text="산책을 해보는 건 어떤가요?"
+            android:textColor="#4F4F4F"
+            android:textSize="14sp" />
+
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="62dp"
+        android:layout_height="58dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="-80dp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
     <CalendarView
         android:id="@+id/calendarView"
