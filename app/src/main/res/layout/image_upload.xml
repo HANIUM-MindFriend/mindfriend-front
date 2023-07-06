@@ -9,7 +9,15 @@
         android:id="@+id/imageView"
         android:layout_width="390dp"
         android:layout_height="348dp"
-        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="167dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="업로드"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="78dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
