@@ -1,23 +1,19 @@
 package com.example.mindfriendfront
+
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.mindfriendfront.Calendar
-import com.example.mindfriendfront.R
-
 
 class Picture : AppCompatActivity() {
 
-    private lateinit var readBtn: Button
     private lateinit var imageView: ImageView
     private val CAMERA_REQUEST_CODE = 1
     private val GALLERY_REQUEST_CODE = 2
@@ -101,13 +97,16 @@ class Picture : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera()
+        when (requestCode) {
+            CAMERA_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera()
+                }
             }
-        } else if (requestCode == GALLERY_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGallery()
+            GALLERY_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openGallery()
+                }
             }
         }
     }
@@ -115,12 +114,15 @@ class Picture : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            if (requestCode == CAMERA_REQUEST_CODE) {
-                val imageBitmap = data?.extras?.get("data") as Bitmap
-                imageView.setImageBitmap(imageBitmap)
-            } else if (requestCode == GALLERY_REQUEST_CODE) {
-                val selectedImageUri = data?.data
-                imageView.setImageURI(selectedImageUri)
+            when (requestCode) {
+                CAMERA_REQUEST_CODE -> {
+                    val imageBitmap = data?.extras?.get("data") as Bitmap
+                    imageView.setImageBitmap(imageBitmap)
+                }
+                GALLERY_REQUEST_CODE -> {
+                    val selectedImageUri = data?.data
+                    imageView.setImageURI(selectedImageUri)
+                }
             }
         }
     }
