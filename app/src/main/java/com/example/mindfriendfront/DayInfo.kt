@@ -1,12 +1,13 @@
 package com.example.mindfriendfront
 
-import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import android.view.View
+import android.R
 import android.graphics.Color
+import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+
 
 class DayInfo : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
@@ -31,15 +32,22 @@ class DayInfo : AppCompatActivity() {
 //
 //        }
     }
-    fun changeViewColor(view: View, data: String) {
-        val color: Int = when (data) {
-            "value1" -> Color.RED
-            "value2" -> Color.GREEN
-            "value3" -> Color.BLUE
-            else -> Color.BLACK
-        }
-        view.setBackgroundColor(color)
-//        android:background="@drawable/dayinfo_color"
-        view.drawableState
-    }
+//    fun changeViewColor(view: View, data: String) {
+//        val color: Int = when (data) {
+//            "value1" -> Color.RED
+//            "value2" -> Color.GREEN
+//            "value3" -> Color.BLUE
+//            else -> Color.WHITE
+//        }
+////        view.setBackgroundColor(color)
+//        view.setBackgroundResource(color)
+//    }
+//    fun changeViewColor(view: View, data: String) {
+//        LinearLayout 1page;
+//        1page = (LinearLayout) view.findViewById(R.id.1page);
+//        1page.setBackgroundColor(Color.parseColor("#000000"));
+//
+//        colorView = findViewById(R.id.colorView)
+//
+//    }
 }
