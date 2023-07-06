@@ -33,15 +33,12 @@
             android:exported="false" />
         <activity
             android:name=".Calendar"
-            android:exported="false"
-            android:label="@string/title_activity_main2" />
-        <activity
-            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Picture"
             android:name=".MainActivity2"
             android:name=".DayInfo"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
