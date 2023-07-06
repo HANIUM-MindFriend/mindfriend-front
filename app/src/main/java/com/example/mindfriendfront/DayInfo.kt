@@ -1,6 +1,6 @@
 package com.example.mindfriendfront
 
-import android.R
+import android.R.layout
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -23,7 +23,7 @@ class DayInfo : AppCompatActivity() {
         // 메뉴 열기 버튼 클릭 시 동작 추가
         btnBack.setOnClickListener { v: View? ->
             // Toast.makeText(applicationContext, "버튼 클릭", Toast.LENGTH_SHORT).show()
-            changeViewColor(colorView, "value1")
+//            changeViewColor(colorView, "value1")
         }
 
 //        btnBack = findViewById(R.id.btnBack)
