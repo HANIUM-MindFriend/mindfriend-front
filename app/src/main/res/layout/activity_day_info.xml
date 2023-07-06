@@ -195,15 +195,4 @@ android:layout_height="match_parent">
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button"-->
-<!--        android:layout_width="47dp"-->
-<!--        android:layout_height="47dp"-->
-<!--        android:layout_marginStart="252dp"-->
-<!--        android:layout_marginTop="124dp"-->
-<!--        android:text="Button"-->
-<!--        app:icon="@drawable/back"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
