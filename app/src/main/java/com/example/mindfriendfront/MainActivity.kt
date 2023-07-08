@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         // 마이페이지 버튼 클릭 시 동작 추가
         btnMyPage.setOnClickListener {
+            // 마이페이지로 이동하는 동작 구현
+            setContentView(R.layout.activity_chat)
         }
 
         btnAnalysis.setBackgroundColor(Color.parseColor("#7ea9fd"))
