@@ -3,21 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/senderTextView"
-        android:layout_width="354dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/message_box"
-        android:textStyle="bold"
-        android:layout_gravity="end"
-        android:marginRight="0dp" />
+        android:layout_margin="10dp"
+        android:layout_marginBottom="16dp">
 
+        <TextView
+            android:id="@+id/senderTextView"
+            android:layout_width="354dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_box"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/messageTextView"
-        android:layout_width="352dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/message_box" />
+        <TextView
+            android:id="@+id/messageTextView"
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_box"
+            android:layout_below="@id/senderTextView" />
+    </RelativeLayout>
 
         <TextView
             android:id="@+id/messageTextView"
