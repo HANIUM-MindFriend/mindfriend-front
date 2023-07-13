@@ -29,15 +29,15 @@ class MessageActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "버튼이 눌렸네요", Toast.LENGTH_SHORT).show()
             val message = messageEditText.text.toString().trim()
             if (message.isNotEmpty()) {
-                addMessage("Me", message)
+                addMessage("나", message)
                 messageEditText.text.clear()
             }
         }
 
         // 가상의 메시지로 초기화
-        addMessage("Other", "hi")
-        addMessage("Me", "hello")
-        addMessage("Other", "nice to meet you")
+        addMessage("챗봇", "hi")
+        addMessage("나", "hello")
+        addMessage("챗봇", "nice to meet you")
     }
 
     private fun addMessage(sender: String, message: String) {
