@@ -9,7 +9,10 @@
         android:layout_width="354dp"
         android:layout_height="wrap_content"
         android:background="@drawable/message_box"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:marginRight="0dp" />
+
 
     <TextView
         android:id="@+id/messageTextView"

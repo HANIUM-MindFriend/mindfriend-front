@@ -1,6 +1,9 @@
 package com.example.mindfriendfront
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mindfriendfront.MessageActivity
+
 import android.os.Bundle
 
 import android.widget.Button
@@ -29,10 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         // 분석 버튼 클릭 시 동작 추가
         btnAnalysis.setOnClickListener {
-            // 분석 화면으로 이동하는 동작 구현
-            setContentView(R.layout.activity_chat)
+            val intent = Intent(this, MessageActivity::class.java)
+            startActivity(intent)
         }
-
         // 홈 버튼 클릭 시 동작 추가
         btnHome.setOnClickListener {
             Toast.makeText(applicationContext, "홈 클릭", Toast.LENGTH_SHORT).show()
