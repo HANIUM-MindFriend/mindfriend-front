@@ -1,3 +1,5 @@
+package com.example.mindfriendfront
+
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,18 +11,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mindfriendfront.R
 
-class message : AppCompatActivity() {
+class MessageActivity : AppCompatActivity() {
     private lateinit var messageContainer: LinearLayout
     private lateinit var messageEditText: EditText
     private lateinit var sendButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        Toast.makeText(applicationContext, "홈 클릭", Toast.LENGTH_SHORT).show()
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-//        setContentView(R.layout.activity_message_item)
 
         messageContainer = findViewById(R.id.messageContainer)
         messageEditText = findViewById(R.id.messageEditText)
@@ -28,7 +26,7 @@ class message : AppCompatActivity() {
         sendButton.setBackgroundColor(Color.parseColor("#7ea9fd"))
 
         sendButton.setOnClickListener {
-
+            Toast.makeText(applicationContext, "버튼이 눌렸네요", Toast.LENGTH_SHORT).show()
             val message = messageEditText.text.toString().trim()
             if (message.isNotEmpty()) {
                 addMessage("Me", message)
@@ -43,6 +41,7 @@ class message : AppCompatActivity() {
     }
 
     private fun addMessage(sender: String, message: String) {
+        Toast.makeText(applicationContext, "addMessage 함수 실행", Toast.LENGTH_SHORT).show()
         val messageView = LayoutInflater.from(this).inflate(R.layout.activity_message_item, null)
 
         val senderTextView = messageView.findViewById<TextView>(R.id.senderTextView)
