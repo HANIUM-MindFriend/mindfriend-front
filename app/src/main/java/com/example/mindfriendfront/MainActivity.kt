@@ -2,7 +2,7 @@ package com.example.mindfriendfront
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mindfriendfront.MessageActivity
+//import com.example.mindfriendfront.MessageActivity
 
 import android.os.Bundle
 
@@ -33,18 +33,13 @@ class MainActivity : AppCompatActivity() {
 
         // 분석 버튼 클릭 시 동작 추가
         btnAnalysis.setOnClickListener {
-            val intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent)
         }
         // 홈 버튼 클릭 시 동작 추가
         btnHome.setOnClickListener {
-            Toast.makeText(applicationContext, "홈 클릭", Toast.LENGTH_SHORT).show()
         }
 
         // 마이페이지 버튼 클릭 시 동작 추가
         btnMyPage.setOnClickListener {
-            // 마이페이지로 이동하는 동작 구현
-            setContentView(R.layout.activity_chat)
         }
 
         btnAnalysis.setBackgroundColor(Color.parseColor("#7ea9fd"))

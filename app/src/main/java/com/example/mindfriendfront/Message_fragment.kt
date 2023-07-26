@@ -1,5 +1,4 @@
 package com.example.mindfriendfront
-
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
-class MessageFragment : Fragment() {
+class Message_fragment : Fragment() {
     private lateinit var messageContainer: LinearLayout
     private lateinit var messageEditText: EditText
     private lateinit var sendButton: Button

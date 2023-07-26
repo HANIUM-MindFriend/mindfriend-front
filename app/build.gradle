@@ -6,7 +6,10 @@ plugins {
 android {
     namespace 'com.example.mindfriendfront'
     compileSdk 33
-
+    buildFeatures {
+        // 뷰 바인딩 활성화
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.example.mindfriendfront"
         minSdk 24

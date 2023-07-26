@@ -96,6 +96,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:contentDescription="readBtn"
+
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="조회"
         android:textColor="@color/white"
