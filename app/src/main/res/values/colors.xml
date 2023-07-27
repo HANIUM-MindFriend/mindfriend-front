@@ -2,5 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="clickedBtn">#6587CA</color>
+    <color name="btnColor">#7EA9FD</color>
     <color name="darkblue">#18308D</color>
 </resources>
