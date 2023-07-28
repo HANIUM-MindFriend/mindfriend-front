@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F5FF"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="247.5dp"
+            android:background="@android:color/transparent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/profile"
+            app:civ_border_overlay="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="0.7"
+            android:width="100dp"
+            android:height="50dp"
+            android:text="date"
+            android:textColor="@color/darkblue"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/player_button"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="0.17"
+            android:background="@android:color/transparent"
+            android:onClick="onClick"
+            android:scaleType="fitStart"
+            android:src="@drawable/player_on" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/uploadView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/upButton"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/layout_upload_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/upload1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_upload_background"
+            android:orientation="horizontal">
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/uploadText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="0.7"
+                android:background="@drawable/layout_upload_background"
+                android:gravity="top" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
