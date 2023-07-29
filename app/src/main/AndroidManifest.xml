@@ -48,6 +48,7 @@
         <activity
             android:name=".DayInfo"
             android:exported="false" />
+
         <activity
             android:name=".UploadActivity"
             android:exported="false" />
