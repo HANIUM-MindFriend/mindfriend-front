@@ -53,7 +53,7 @@ class UploadActivity : AppCompatActivity() {
                 stopAudio()
                 playerImageButton.setImageResource(R.drawable.player_on)
             } else {
-                mediaPlayer = MediaPlayer.create(this, R.raw.lawrence)
+                mediaPlayer = MediaPlayer.create(this, R.raw.dreams)
                 mediaPlayer?.setOnCompletionListener {
                     stopAudio()
                     playerImageButton.setImageResource(R.drawable.player_on)
