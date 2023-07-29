@@ -64,7 +64,7 @@ class Calendar_fragment : Fragment() {
 
         // writeBtn 클릭 이벤트 설정
         writeBtn.setOnClickListener {
-            val uploadFragment = Upload_fragment.newInstance()
+            val uploadFragment= Upload_fragment.newInstance()
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.mainNaviFragmentContainer, uploadFragment)
@@ -78,10 +78,10 @@ class Calendar_fragment : Fragment() {
         // readBtn 클릭 이벤트 설정
         readBtn.setOnClickListener {
             // readBtn 클릭 시 동작 수행
-            val AnalysisGraphfragment = AnalysisGraph_fragment.newInstance()
+            val diaryRead_fragment = diaryRead_fragment.newInstance()
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.mainNaviFragmentContainer, AnalysisGraphfragment)
+                .replace(R.id.mainNaviFragmentContainer, diaryRead_fragment)
                 .addToBackStack(null)
                 .commit()
             Toast.makeText(requireContext(), "일기 조회", Toast.LENGTH_SHORT).show()

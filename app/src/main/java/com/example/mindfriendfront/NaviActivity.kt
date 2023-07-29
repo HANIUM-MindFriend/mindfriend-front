@@ -29,7 +29,7 @@ class NaviActivity : AppCompatActivity() {
         // TODO : setOnNavigationItemSelectedListener가 deprecated되어서 대체했는데 setOnItemReselectedListener 는 뭐가 다른 거지?
         binding.mainNavi.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.analysisFragment -> setFragment(TAG_ANALYSIS, Analysis_fragment())
+                R.id.analysisFragment -> setFragment(TAG_ANALYSIS, AnalysisGraph_fragment())
                 R.id.homeFragment -> setFragment(TAG_HOME, Calendar_fragment())
                 R.id.myPageFragment -> setFragment(TAG_MY_PAGE, Message_fragment())
             }
