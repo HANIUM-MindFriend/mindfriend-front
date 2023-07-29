@@ -24,12 +24,5 @@
             android:layout_below="@id/senderTextView" />
     </RelativeLayout>
 
-        <TextView
-            android:id="@+id/messageTextView"
-            android:layout_width="352dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/message_box"
-            android:layout_below="@id/senderTextView" />
-    </RelativeLayout>
 
 </RelativeLayout>
