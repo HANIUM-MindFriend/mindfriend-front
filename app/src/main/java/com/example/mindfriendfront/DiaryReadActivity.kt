@@ -7,6 +7,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class DiaryReadActivity :AppCompatActivity () {
+
+    companion object {
+        fun newInstance(): DiaryReadActivity {
+            return DiaryReadActivity()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)

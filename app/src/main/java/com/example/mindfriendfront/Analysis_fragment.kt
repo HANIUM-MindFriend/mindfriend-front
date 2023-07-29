@@ -12,6 +12,11 @@ import androidx.fragment.app.Fragment
 class Analysis_fragment : Fragment() {
     private lateinit var btnBack: ImageButton
     private lateinit var colorView: View
+    companion object {
+        fun newInstance(): Analysis_fragment {
+            return Analysis_fragment()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
