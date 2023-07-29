@@ -1,4 +1,5 @@
 package com.example.mindfriendfront
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ class Calendar_fragment : Fragment() {
     private lateinit var readBtn: Button
 
     override fun onCreateView(
+
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -61,9 +64,16 @@ class Calendar_fragment : Fragment() {
 
         // writeBtn 클릭 이벤트 설정
         writeBtn.setOnClickListener {
-            // writeBtn 클릭 시 동작 수행
-            Toast.makeText(requireContext(), "일기 쓰기", Toast.LENGTH_SHORT).show()
+            val uploadFragment = Upload_fragment.newInstance()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.mainNaviFragmentContainer, uploadFragment)
+                .addToBackStack(null)
+                .commit()
         }
+
+
+
 
         // readBtn 클릭 이벤트 설정
         readBtn.setOnClickListener {

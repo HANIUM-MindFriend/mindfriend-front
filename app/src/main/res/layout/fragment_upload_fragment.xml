@@ -1,0 +1,160 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainNaviFragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F2F5FF">
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="247.5dp"
+            android:background="@android:color/transparent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/profile"/>
+<!--            app:civ_border_overlay="true" -->
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="0.7"
+            android:width="100dp"
+            android:height="50dp"
+            android:text="Diary"
+            android:textColor="@color/darkblue"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/player_button"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="0.17"
+            android:background="@android:color/transparent"
+            android:onClick="onClick"
+            android:scaleType="fitStart"
+            android:src="@drawable/player_on" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/uploadView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/layout_upload_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/upload1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_upload_background"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/uploadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical|start"
+                    android:text="2021-07-04"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <ImageButton
+                    android:id="@+id/camera_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.3"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/camera" />
+
+                <ImageButton
+                    android:id="@+id/gallery_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.15"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/gallery" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/uploadText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="0.7"
+                android:background="@drawable/layout_upload_background"
+                android:gravity="top" />
+
+            <ImageButton
+                android:id="@+id/write_ib_upload"
+                android:layout_width="65dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_for_circle_button" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.mindfriendfront
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -60,6 +61,7 @@ class Calendar : AppCompatActivity() {
         // writeBtn 클릭 이벤트 설정
         writeBtn.setOnClickListener {
             // writeBtn 클릭 시 동작 수행
+
             Toast.makeText(applicationContext, "일기 쓰기", Toast.LENGTH_SHORT).show()
         }
 
