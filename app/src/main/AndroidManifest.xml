@@ -17,6 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MindFriendFront"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.mindfriendfront.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/files_path" />
+        </provider>
+
+        <activity
+            android:name=".Calendar"
+            android:exported="false" />
         <activity
             android:name=".Calendar_fragment"
             android:exported="false" />
