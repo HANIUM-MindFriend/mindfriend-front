@@ -63,6 +63,7 @@ class SignupActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, REQUEST_IMAGE_GALLERY)
         }
+
         val dupliButton :Button=findViewById(R.id.dupliButton)
         dupliButton.setBackgroundColor(Color.parseColor("#7ea9fd"))
 
@@ -121,7 +122,23 @@ class SignupActivity : AppCompatActivity() {
         })
 
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK && data != null) {
+            // 이미지를 선택한 경우 실행될 부분
+            val selectedImage = data.data
+            if (selectedImage != null) {
+                // 선택한 이미지를 비트맵으로 변환하여 ImageView에 설정
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+                val circularBitmap = getCircularBitmap(bitmap)
+                val profileIMG: ImageButton = findViewById(R.id.profileIMG)
+                profileIMG.setImageBitmap(circularBitmap)
+            } else {
+                Toast.makeText(this, "이미지를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     companion object {
         const val REQUEST_IMAGE_GALLERY = 1
     }
