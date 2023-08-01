@@ -17,6 +17,9 @@
             android:exported="false" />
         <activity
             android:name=".DayInfo"
+            android:exported="false" />
+        <activity
+            android:name=".Analyze"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
