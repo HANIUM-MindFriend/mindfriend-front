@@ -4,5 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="clickedBtn">#6587CA</color>
     <color name="btnColor">#7EA9FD</color>
+    <color name="skyblue">#C8DBFF</color>
     <color name="darkblue">#18308D</color>
+    <color name="app_red">#FF0000</color>
+    <color name="background">#F2F5FF</color>
+    <color name="checkbox_checked">#0C2A64</color>
+    <color name="checkbox_unchecked">#FFFFFF</color>
 </resources>
