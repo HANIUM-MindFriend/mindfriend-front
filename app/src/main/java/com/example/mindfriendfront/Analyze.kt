@@ -36,9 +36,6 @@ class Analyze : AppCompatActivity() {
         gridView.adapter = adapter
     }
 }
-//위 코드에서 R.drawable.background_image 부분을 설정하고자 하는 배경 이미지의 리소스 아이디로 변경해주시면 됩니다.
-//이렇게 하면 Analyze 클래스의 onCreate 함수에서 GridView의 배경화면이 설정됩니다.
-
 
 
 
