@@ -1,6 +1,7 @@
 package com.example.mindfriendfront.api
 
 
+import com.example.mindfriendfront.data.LoginResponse
 import com.example.mindfriendfront.data.SignUpData
 import com.example.mindfriendfront.data.UserLogin
 import okhttp3.MultipartBody
@@ -14,7 +15,7 @@ import retrofit2.http.Part
 
 interface ApiService {
     @POST("auth/sign-in")
-    fun loginUser(@Body userData: UserLogin): Call<Void>
+    fun loginUser(@Body userData: UserLogin): Call<LoginResponse>
 
     @Multipart
     @POST("/auth/sign-up")
