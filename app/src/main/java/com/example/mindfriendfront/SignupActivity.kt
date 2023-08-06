@@ -27,7 +27,6 @@ import android.widget.*
 import com.example.mindfriendfront.data.SignUpData
 import com.example.mindfriendfront.network.ApiServiceFactory
 import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -192,7 +191,7 @@ class SignupActivity : AppCompatActivity() {
             Toast.makeText(this, "프로필 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
             return
         }
-        val profileImgRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), profileImgFile)
+        val profileImgRequestBody = RequestBody.create(MediaType.parse("image/*"), profileImgFile)
         val profileImgPart = MultipartBody.Part.createFormData("profileImg", profileImgFile.name, profileImgRequestBody)
 
         // 회원가입 정보를 데이터 모델 클래스로 생성
@@ -205,7 +204,7 @@ class SignupActivity : AppCompatActivity() {
         )
 
         // 회원가입 정보를 JSON 형태의 RequestBody로 변환
-        val signUpRequestBody = RequestBody.create("application/json".toMediaTypeOrNull(), signUpData.toString())
+        val signUpRequestBody = RequestBody.create(MediaType.parse("application/json"), signUpData.toString())
 
         // ApiService를 가져와서 요청 보내기
         val apiService = ApiServiceFactory.apiService
