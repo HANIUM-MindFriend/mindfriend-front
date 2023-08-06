@@ -18,6 +18,12 @@ class Login : AppCompatActivity() {
     private lateinit var loginBtn: Button
     private  lateinit var editPassword: EditText
     private  lateinit var editText: EditText
+    private fun storeAccessToken(token: String) {
+        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("accessToken", token)
+        editor.apply()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +44,13 @@ class Login : AppCompatActivity() {
                     if (response.isSuccessful) {
                         // 성공적인 응답 처리
                         Toast.makeText(applicationContext, "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
+                        // 로그인 성공
+                        val accessToken = response.headers()["Authorization"]
+                        if (accessToken != null) {
+                            // 성공적으로 토큰을 받았을 때, 저장합니다.
+                            storeAccessToken(accessToken)
+                        }
+
                     } else {
                         // 실패한 응답 처리
                         val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}"
@@ -56,9 +69,11 @@ class Login : AppCompatActivity() {
 
         }
 
+
         val join = findViewById<TextView>(R.id.join)
         join.setOnClickListener {
             Toast.makeText(applicationContext, "회원가입 클릭", Toast.LENGTH_SHORT).show()
+
         }
 
         val findId = findViewById<TextView>(R.id.findId)
