@@ -1,5 +1,6 @@
 package com.example.mindfriendfront
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.mindfriendfront.data.LoginResponse
 import com.example.mindfriendfront.data.UserLogin
 import com.example.mindfriendfront.network.ApiServiceFactory.apiService
 import retrofit2.Call
@@ -26,18 +28,22 @@ class Login : AppCompatActivity() {
         editText = findViewById(R.id.editTextText)
         loginBtn = findViewById(R.id.loginBtn)
         loginBtn.setOnClickListener {
-            //Toast.makeText(applicationContext, "로그인 클릭", Toast.LENGTH_SHORT).show()
             val userId = editPassword.text.toString()
             val userPassword = editText.text.toString()
 
             val userLoginData = UserLogin(userId, userPassword)
             val call = apiService.loginUser(userLoginData)
 
-            call.enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+            call.enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful) {
-                        // 성공적인 응답 처리
-                        Toast.makeText(applicationContext, "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
+                        val loginResponse = response.body()
+                        if (loginResponse != null) {
+                            // 로그인 성공 시 서버에서 반환된 토큰 저장
+                            val accessToken = loginResponse.data.accessToken
+                            saveTokenToSharedPreferences(accessToken)
+                            Toast.makeText(applicationContext, "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         // 실패한 응답 처리
                         val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}"
@@ -46,15 +52,14 @@ class Login : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<Void>, t: Throwable) {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     // 네트워크 실패 처리
                     Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
                     Toast.makeText(applicationContext, "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
                 }
             })
-
-
         }
+
 
         val join = findViewById<TextView>(R.id.join)
         join.setOnClickListener {
@@ -71,4 +76,11 @@ class Login : AppCompatActivity() {
             Toast.makeText(applicationContext, "아이디 찾기 클릭", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun saveTokenToSharedPreferences(accessToken: String) {
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("accessToken", accessToken)
+        editor.apply()
+    }
+
 }
