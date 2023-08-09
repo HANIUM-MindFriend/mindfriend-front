@@ -1,6 +1,5 @@
 package com.example.mindfriendfront
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,18 +14,10 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.EditText
-import android.widget.ImageView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import android.app.Activity
-import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
-import android.widget.*
-import com.example.mindfriendfront.data.SignUpData
+import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.network.ApiServiceFactory
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -196,7 +187,7 @@ class SignupActivity : AppCompatActivity() {
         val profileImgPart = MultipartBody.Part.createFormData("profileImg", profileImgFile.name, profileImgRequestBody)
 
         // 회원가입 정보를 데이터 모델 클래스로 생성
-        val signUpData = SignUpData(
+        val userSignUp = UserSignUp(
             userId = idText.text.toString(),
             userPassword = pwText.text.toString(),
             userNickname = nicknameText.text.toString(),
@@ -205,11 +196,11 @@ class SignupActivity : AppCompatActivity() {
         )
 
         // 회원가입 정보를 JSON 형태의 RequestBody로 변환
-        val signUpRequestBody = RequestBody.create("application/json".toMediaTypeOrNull(), signUpData.toString())
+        val signUpRequestBody = RequestBody.create("application/json".toMediaTypeOrNull(), userSignUp.toString())
 
         // ApiService를 가져와서 요청 보내기
         val apiService = ApiServiceFactory.apiService
-        apiService.signUp(profileImgPart, signUpData).enqueue(object : Callback<ResponseBody> {
+        apiService.signUp(profileImgPart, userSignUp).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     // 성공적으로 응답 받았을 때 처리
