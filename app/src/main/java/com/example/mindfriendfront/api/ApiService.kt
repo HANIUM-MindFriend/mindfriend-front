@@ -2,10 +2,9 @@ package com.example.mindfriendfront.api
 
 
 import com.example.mindfriendfront.data.LoginResponse
-import com.example.mindfriendfront.data.SignUpData
+import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.data.UserLogin
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -21,6 +20,6 @@ interface ApiService {
     @POST("/auth/sign-up")
     fun signUp(
         @Part profileImg: MultipartBody.Part,
-        @Part("signUp") signUpData: SignUpData
+        @Part("signUp") userSignUp: UserSignUp
     ): Call<ResponseBody>
 }
