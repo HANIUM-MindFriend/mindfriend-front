@@ -25,7 +25,10 @@
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".PopupMain"
+            android:name=".Popup"
+            android:exported="false" />
+        <activity
+            android:name=".ChatBot"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

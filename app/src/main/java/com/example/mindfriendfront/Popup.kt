@@ -9,7 +9,7 @@ import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class PopupMain : AppCompatActivity() {
+class Popup : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
