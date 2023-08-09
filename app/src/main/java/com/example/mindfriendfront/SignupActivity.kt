@@ -16,6 +16,10 @@ import android.widget.CompoundButton
 import android.widget.EditText
 import android.app.Activity
 import android.util.Log
+import com.example.mindfriendfront.data.DuplicateResponse
+import com.example.mindfriendfront.data.LoginResponse
+import com.example.mindfriendfront.data.UserDuplicate
+import com.example.mindfriendfront.data.UserLogin
 import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.network.ApiServiceFactory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -41,6 +45,9 @@ class SignupActivity : AppCompatActivity() {
     private  lateinit var yearText: EditText
     private  lateinit var monthText: EditText
     private  lateinit var dayText: EditText
+    private lateinit var dupliButton: Button
+    private var chkUserId: Boolean = false
+
     private fun getCircularBitmap(bitmap: Bitmap): Bitmap {
         val outputBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(outputBitmap)
@@ -75,10 +82,7 @@ class SignupActivity : AppCompatActivity() {
         yearText = findViewById(R.id.yearText)
         monthText = findViewById(R.id.monthText)
         dayText = findViewById(R.id.dayText)
-
-
-
-
+        dupliButton = findViewById(R.id.dupliButton)
 
         // 이미지 자르기 함수 호출
         val circularBitmap = getCircularBitmap(originalBitmap)
@@ -147,9 +151,55 @@ class SignupActivity : AppCompatActivity() {
             }
         })
         signUpBtn.setOnClickListener {
-            processDate()
+            if (chkUserId){
+                processDate()
+            }
+            else{
+                Toast.makeText(applicationContext, "아이디 중복 확인을 먼저 진행해주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
+        dupliButton.setOnClickListener {
+            chkDuplicateUserId()
         }
 
+    }
+
+    private fun chkDuplicateUserId(){
+        if (idText.text.toString() != null){
+            val userDuplicateData = UserDuplicate(idText.text.toString())
+            val call = ApiServiceFactory.apiService.chkDuplicate(userDuplicateData)
+            call.enqueue(object : Callback<DuplicateResponse> {
+                override fun onResponse(call: Call<DuplicateResponse>, response: Response<DuplicateResponse>) {
+                    if (response.isSuccessful) {
+                        val duplicateResponse = response.body()
+                        if (duplicateResponse != null) {
+                            if (duplicateResponse.data){
+                                Toast.makeText(applicationContext, "중복된 아이디입니다. 다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                chkUserId = true;
+                                Toast.makeText(applicationContext, "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    } else {
+                        // 실패한 응답 처리
+                        val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}"
+                        Log.e("API_RESPONSE", message)
+                        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<DuplicateResponse>, t: Throwable) {
+                    // 네트워크 실패 처리
+                    Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
+                    Toast.makeText(applicationContext, "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+        else{
+            Toast.makeText(this, "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun isDateValid(dateStr: String): Boolean {
