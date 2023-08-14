@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="wrap_content"
-    android:background="#E6F4F6">
-    <!--    android:layout_height="match_parent"-->
+    android:background="#E6F4F6"
+    android:paddingBottom="50dp">
 
     <TextView
         android:id="@+id/popupTitle1"
@@ -70,6 +70,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/popup_numbers" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="388dp"
+        android:text="심리상담 비상직통전화 1577-0199"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <!--        <TableRow>-->
 <!--            <TextView-->

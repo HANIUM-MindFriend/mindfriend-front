@@ -19,9 +19,6 @@ class ChatBot : AppCompatActivity() {
 
         backgroundThread = Thread {
             while (running) {
-                //1. 작성한 데이터 서버로 보내기
-                //2. chat gpt의 답변 받아오기
-                //3. 화면에 띄우기
                 chat_text.setText(chat_data)
 
             }
