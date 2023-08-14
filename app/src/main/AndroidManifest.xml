@@ -43,7 +43,7 @@
         <activity android:name=".NaviActivity"
             android:exported="false"/>
         <activity
-            android:name=".Calendar"
+            android:name=".SignupActivity"
             android:exported="false" />
         <activity
             android:name=".Picture"
@@ -58,7 +58,7 @@
         android:name=".Login"
         android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".Calendar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

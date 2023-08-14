@@ -8,9 +8,12 @@ import android.widget.ImageButton
 import android.widget.CalendarView
 import java.util.Calendar
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class Calendar : AppCompatActivity() {
 
@@ -71,8 +74,27 @@ class Calendar : AppCompatActivity() {
             Toast.makeText(applicationContext, "일기 조회", Toast.LENGTH_SHORT).show()
         }
 
+        if (true) { //팝업이 뜨는 조건 추가하기
+            showCustomDialog()
+        }
+    }
 
+    private fun showCustomDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.activity_popup, null)
 
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(dialogView)
+            .create()
+
+        // 팝업창 배경 흐리게 처리
+        dialog.window?.setBackgroundDrawable(ContextCompat.getDrawable(this, android.R.color.transparent))
+
+        // 팝업창 닫기 버튼 클릭 이벤트 처리
+        dialogView.findViewById<ImageButton>(R.id.popupExitBtn)?.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
 
