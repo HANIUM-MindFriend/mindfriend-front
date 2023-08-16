@@ -29,6 +29,12 @@ import java.util.Locale
 class DiaryRead_fragment : Fragment() {
     private lateinit var pdfButton: Button
     private lateinit var rootView: View
+    companion object {
+        private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+        fun newInstance(): DiaryRead_fragment {
+            return DiaryRead_fragment()
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +46,10 @@ class DiaryRead_fragment : Fragment() {
 
         val currentDate = Date()
         pdfButton = rootView.findViewById(R.id.pdfButton)
-        pdfButton.setOnClickListener { createPdf() }
+        pdfButton.setOnClickListener {
+       //     Toast.makeText(requireContext(), "pdf추출!", Toast.LENGTH_SHORT).show()
+            createPdf()
+        }
         val dateFormat = SimpleDateFormat("MMdd")
         val formattedDate = dateFormat.format(currentDate)
 
@@ -48,12 +57,16 @@ class DiaryRead_fragment : Fragment() {
 
         return rootView
     }
-    private fun createPdf() {
+
+
+
+    private fun checkAndRequestPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -63,6 +76,35 @@ class DiaryRead_fragment : Fragment() {
             saveAsPdf()
         }
     }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveAsPdf() // 권한이 허용되었을 때 saveAsPdf 함수 호출
+            } else {
+                // 권한이 거부되었을 때 처리
+                Toast.makeText(requireContext(), "권한이 거부되었습니다. PDF를 생성할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun createPdf() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(requireContext(), "PDF 저장 권한이 필요합니다.", Toast.LENGTH_LONG).show()
+
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
+            )
+        } else {
+            saveAsPdf()
+        }
+    }
+
     private fun getFormattedDate(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyMMdd", Locale.getDefault())
@@ -74,6 +116,7 @@ class DiaryRead_fragment : Fragment() {
         return contentView.height
     }
     private fun saveAsPdf() {
+
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(rootView.width, rootView.height, 1).create()
 
@@ -123,7 +166,5 @@ class DiaryRead_fragment : Fragment() {
         return bitmap
     }
 
-    companion object {
-        private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
-    }
+
 }

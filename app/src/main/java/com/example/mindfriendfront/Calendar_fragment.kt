@@ -79,6 +79,12 @@ class Calendar_fragment : Fragment() {
         readBtn.setOnClickListener {
             // readBtn 클릭 시 동작 수행
             Toast.makeText(requireContext(), "일기 조회", Toast.LENGTH_SHORT).show()
+
+            val diaryreadFragment = DiaryRead_fragment.newInstance()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.mainNaviFragmentContainer, diaryreadFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         return rootView
