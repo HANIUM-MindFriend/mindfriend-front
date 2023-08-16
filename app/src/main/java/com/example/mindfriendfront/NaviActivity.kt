@@ -31,7 +31,7 @@ class NaviActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.analysisFragment -> setFragment(TAG_ANALYSIS, Analysis_fragment())
                 R.id.homeFragment -> setFragment(TAG_HOME, Calendar_fragment())
-                R.id.myPageFragment -> setFragment(TAG_MY_PAGE, Message_fragment())
+                R.id.myPageFragment -> setFragment(TAG_MY_PAGE, DiaryRead_fragment())
             }
             true
         }
