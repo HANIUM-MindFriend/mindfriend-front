@@ -1,6 +1,7 @@
 package com.example.mindfriendfront
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -28,8 +29,8 @@ class Login : AppCompatActivity() {
         editText = findViewById(R.id.editTextText)
         loginBtn = findViewById(R.id.loginBtn)
         loginBtn.setOnClickListener {
-            val userId = editPassword.text.toString()
-            val userPassword = editText.text.toString()
+            val userId = editText.text.toString()
+            val userPassword = editPassword.text.toString()
 
             val userLoginData = UserLogin(userId, userPassword)
             val call = apiService.loginUser(userLoginData)
@@ -43,11 +44,18 @@ class Login : AppCompatActivity() {
                             val accessToken = loginResponse.data.accessToken
                             saveTokenToSharedPreferences(accessToken)
                             Toast.makeText(applicationContext, "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
+
+                            // Calandar Activity로 이동
+                            val intent = Intent(applicationContext, com.example.mindfriendfront.Calendar::class.java)
+                            startActivity(intent)
+
                         }
                     } else {
                         // 실패한 응답 처리
-                        val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}"
-                        Log.e("API_RESPONSE", message)
+                        // 실패한 응답 처리
+                            val errorBody = response.errorBody()?.string()
+                            val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
+                            Log.e("API_RESPONSE", message)
                         Toast.makeText(applicationContext, "로그인에 실패하셨습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
                     }
                 }
