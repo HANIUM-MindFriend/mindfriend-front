@@ -6,87 +6,100 @@
     android:layout_height="match_parent"
     android:background="#F2F5FF">
 
-    <LinearLayout
-        android:id="@+id/upButton"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/pdfContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="0.7"
-            android:width="100dp"
-            android:height="50dp"
-            android:text="date"
-            android:textColor="@color/darkblue"
-            android:textSize="45sp"
-            android:textStyle="bold" />
-        <Button
-            android:id="@+id/pdfButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Export PDF"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp" />
-        <ImageButton
-            android:id="@+id/player_button"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="0.17"
-            android:background="@android:color/transparent"
-            android:scaleType="fitStart"
-            android:src="@drawable/player_on" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/uploadView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/upButton"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/layout_upload_background"
-        android:orientation="vertical">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
         <LinearLayout
-            android:id="@+id/upload1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/layout_upload_background"
-            android:orientation="horizontal">
-
-            <!-- Add your upload1 content here -->
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/uploadText"
+            <LinearLayout
+                android:id="@+id/upButton"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="0.7"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="0.7"
+                    android:width="100dp"
+                    android:height="50dp"
+                    android:text="date"
+                    android:textColor="@color/darkblue"
+                    android:textSize="45sp"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/pdfButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Export PDF"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="16dp" />
+                <ImageButton
+                    android:id="@+id/player_button"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="0.17"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/player_on" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/uploadView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/layout_upload_background"
-                android:gravity="top" />
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/upload1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_upload_background"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/uploadText"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="0.7"
+                        android:background="@drawable/layout_upload_background"
+                        android:gravity="top" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
