@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -27,7 +28,7 @@ import java.util.Date
 import java.util.Locale
 
 class DiaryRead_fragment : Fragment() {
-    private lateinit var pdfButton: Button
+    private lateinit var pdfButton: ImageButton
     private lateinit var rootView: View
     companion object {
         private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
