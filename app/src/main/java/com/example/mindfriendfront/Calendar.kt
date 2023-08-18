@@ -20,7 +20,8 @@ class Calendar : AppCompatActivity() {
     private lateinit var calendarView: CalendarView
     private lateinit var writeBtn: ImageButton
     private lateinit var readBtn: Button
-
+    // 선택한 날짜를 저장할 변수
+    private var selectedDate: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
@@ -46,6 +47,8 @@ class Calendar : AppCompatActivity() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.set(year, month, dayOfMonth)
+            selectedDate = selectedCalendar.timeInMillis // 선택한 날짜를 저장
+
 
             val todayCalendar = Calendar.getInstance()
 
@@ -71,7 +74,11 @@ class Calendar : AppCompatActivity() {
         // readBtn 클릭 이벤트 설정
         readBtn.setOnClickListener {
             // readBtn 클릭 시 동작 수행
+            Log.e("date", selectedDate.toString())
             Toast.makeText(applicationContext, "일기 조회", Toast.LENGTH_SHORT).show()
+            val intent = Intent(applicationContext, com.example.mindfriendfront.DiaryReadActivity::class.java)
+            intent.putExtra("selectedDate", selectedDate) // 선택한 날짜를 Intent에 추가합니다.
+            startActivity(intent)
         }
 
         if (true) { //팝업이 뜨는 조건 추가하기

@@ -120,7 +120,7 @@
                 android:layout_marginRight="30dp"
                 android:textStyle="bold"
                 android:hint="비밀번호 입력"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textSize="15sp" />
 
         </LinearLayout>
@@ -146,7 +146,7 @@
                 android:layout_marginRight="30dp"
                 android:textStyle="bold"
                 android:hint="비밀번호 확인"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textSize="15sp" />
 
         </LinearLayout>
