@@ -2,6 +2,7 @@ package com.example.mindfriendfront.api
 
 
 import com.example.mindfriendfront.data.DiaryGetResponse
+import com.example.mindfriendfront.data.DiaryUpload
 import com.example.mindfriendfront.data.DuplicateResponse
 import com.example.mindfriendfront.data.LoginResponse
 import com.example.mindfriendfront.data.UserDuplicate
@@ -32,5 +33,12 @@ interface ApiService {
     fun signUp(
         @Part profileImg: MultipartBody.Part,
         @Part("signUp") userSignUp: UserSignUp
+    ): Call<ResponseBody>
+
+    @Multipart
+    @POST("/diary/write")
+    fun uploadDiary(
+        @Part postImg: MultipartBody.Part,
+        @Part("postDiary") diaryUpload: DiaryUpload
     ): Call<ResponseBody>
 }

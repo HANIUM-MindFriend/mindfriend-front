@@ -17,6 +17,7 @@ class Calendar_fragment : Fragment() {
     private lateinit var calendarView: CalendarView
     private lateinit var writeBtn: ImageButton
     private lateinit var readBtn: Button
+    private var selectedDate: Long = 0
 
     override fun onCreateView(
 
@@ -47,6 +48,8 @@ class Calendar_fragment : Fragment() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedCalendar = Calendar.getInstance()
             selectedCalendar.set(year, month, dayOfMonth)
+            selectedDate = selectedCalendar.timeInMillis // 선택한 날짜를 저장
+
 
             val todayCalendar = Calendar.getInstance()
 
@@ -78,12 +81,14 @@ class Calendar_fragment : Fragment() {
         // readBtn 클릭 이벤트 설정
         readBtn.setOnClickListener {
             // readBtn 클릭 시 동작 수행
-            val diaryRead_fragment = diaryRead_fragment.newInstance()
+            val diaryRead_fragment = diaryRead_fragment.newInstance(selectedDate)
+
 
             parentFragmentManager.beginTransaction()
                 .replace(R.id.mainNaviFragmentContainer, diaryRead_fragment)
                 .addToBackStack(null)
                 .commit()
+
             Toast.makeText(requireContext(), "일기 조회", Toast.LENGTH_SHORT).show()
         }
 
