@@ -66,7 +66,7 @@ class Calendar : AppCompatActivity() {
             // writeBtn 클릭 시 동작 수행
 
             Toast.makeText(applicationContext, "일기 쓰기", Toast.LENGTH_SHORT).show()
-            val intent = Intent(applicationContext, com.example.mindfriendfront.UploadActivity::class.java)
+            val intent = Intent(applicationContext, com.example.mindfriendfront.Upload_fragment::class.java)
             startActivity(intent)
         }
 

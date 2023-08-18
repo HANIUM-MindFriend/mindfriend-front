@@ -46,7 +46,7 @@ class Login : AppCompatActivity() {
                             Toast.makeText(applicationContext, "로그인에 성공하셨습니다.", Toast.LENGTH_SHORT).show()
 
                             // Calandar Activity로 이동
-                            val intent = Intent(applicationContext, com.example.mindfriendfront.Calendar::class.java)
+                            val intent = Intent(applicationContext, com.example.mindfriendfront.NaviActivity::class.java)
                             startActivity(intent)
 
                         }

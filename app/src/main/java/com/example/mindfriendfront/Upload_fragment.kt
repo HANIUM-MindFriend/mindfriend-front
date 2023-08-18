@@ -3,7 +3,9 @@ package com.example.mindfriendfront
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +14,8 @@ import android.view.ViewGroup
 import android.media.MediaPlayer
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,7 +24,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.example.mindfriendfront.data.DiaryUpload
+import com.example.mindfriendfront.data.UserSignUp
+import com.example.mindfriendfront.network.ApiServiceFactory
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -37,6 +53,8 @@ private const val ARG_PARAM2 = "param2"
 class Upload_fragment : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var imageView: ImageView
+    private lateinit var title : EditText
+    private lateinit var content : EditText
 
     private val CAMERA_REQUEST_CODE = 1
     private val GALLERY_REQUEST_CODE = 2
@@ -52,12 +70,15 @@ class Upload_fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.activity_upload, container, false)
-
+        imageView = rootView.findViewById(R.id.imageView) // ImageView 초기화 추가
         val dateTextView: TextView = rootView.findViewById(R.id.date)
+        title= rootView.findViewById(R.id.editTitle)
+        content = rootView.findViewById(R.id.editContent)
         val cameraImageButton: ImageButton = rootView.findViewById(R.id.camera_button)
         val galleryImageButton: ImageButton = rootView.findViewById(R.id.gallery_button)
         val playerImageButton: ImageButton = rootView.findViewById(R.id.player_button)
-        val uploadImageButton: ImageButton = rootView.findViewById(R.id.write_ib_upload)
+        val uploadButton: ImageButton = rootView.findViewById(R.id.write_ib_upload)
+
         val currentDate = Date()
 
         val dateFormat = SimpleDateFormat("yyyy. MM. dd")
@@ -85,7 +106,7 @@ class Upload_fragment : Fragment() {
             Toast.makeText(requireContext(), "갤러리 호출", Toast.LENGTH_SHORT).show()
         }
 
-        uploadImageButton.setOnClickListener {
+        uploadButton.setOnClickListener {
             // 작성 버튼 클릭 시 반응
             val Analysis_fragment = Analysis_fragment.newInstance()
 
@@ -111,6 +132,10 @@ class Upload_fragment : Fragment() {
                 playAudio()
                 playerImageButton.setImageResource(R.drawable.player_off)
             }
+        }
+
+        uploadButton.setOnClickListener {
+            uploadDiaryRequest()
         }
 
         return rootView
@@ -223,5 +248,65 @@ class Upload_fragment : Fragment() {
         super.onDestroy()
         mediaPlayer?.release()
         mediaPlayer = null
+    }
+
+    private fun uploadDiaryRequest() {
+        // 프로필 이미지 파일을 MultipartBody.Part로 변환
+        // imageView에서 이미지 가져오기
+        val imageViewDrawable = imageView.drawable
+        if (imageViewDrawable == null) {
+            Toast.makeText(requireContext(), "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // imageView의 drawable을 Bitmap으로 변환
+        val imageBitmap = (imageViewDrawable as BitmapDrawable).bitmap
+
+        // Bitmap을 File로 변환
+        val postImgFile = createImageFile()
+        postImgFile?.let {
+            FileOutputStream(it).apply {
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, this)
+                close()
+            }
+        }
+        if (postImgFile == null) {
+            Toast.makeText(requireContext(), "프로필 이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val postImgRequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), postImgFile)
+        val postImgPart = MultipartBody.Part.createFormData("postImg", postImgFile.name, postImgRequestBody)
+
+        // 회원가입 정보를 데이터 모델 클래스로 생성
+        val diaryUpload = DiaryUpload(
+            title = title.text.toString(),
+            content = content.text.toString(),
+        )
+
+        // 회원가입 정보를 JSON 형태의 RequestBody로 변환
+        val signUpRequestBody = RequestBody.create("application/json".toMediaTypeOrNull(), diaryUpload.toString())
+
+        // ApiService를 가져와서 요청 보내기
+        val apiService = ApiServiceFactory.apiService
+        apiService.uploadDiary(postImgPart, diaryUpload).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    // 성공적으로 응답 받았을 때 처리
+                    Toast.makeText(requireContext(), "일기 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    // 응답은 성공적으로 받았지만 서버에서 오류 응답을 보낸 경우 처리
+                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}"
+                    Log.e("API_RESPONSE", message)
+                    Toast.makeText(requireContext(), "서버 오류: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // 요청 실패 시 처리
+
+                Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
+                Toast.makeText(requireContext(), "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
