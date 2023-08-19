@@ -22,15 +22,15 @@
 
                 <!-- 메뉴 버튼 -->
                 <ImageButton
-                    android:id="@+id/menuButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/backButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/menu"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="12dp" />
+                    android:padding="12dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/back" />
 
                 <!-- 통계 문구 -->
                 <TextView
