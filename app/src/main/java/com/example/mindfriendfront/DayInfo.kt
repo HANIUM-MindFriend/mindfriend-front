@@ -13,6 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 class DayInfo : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
     private lateinit var colorView: View
+    companion object {
+        private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+        fun newInstance(): DayInfo {
+            return DayInfo()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_day_info)

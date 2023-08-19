@@ -29,6 +29,7 @@ import java.util.Locale
 
 class DiaryRead_fragment : Fragment() {
     private lateinit var pdfButton: ImageButton
+    private lateinit var moreButton: ImageButton
     private lateinit var rootView: View
     companion object {
         private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
@@ -47,9 +48,17 @@ class DiaryRead_fragment : Fragment() {
 
         val currentDate = Date()
         pdfButton = rootView.findViewById(R.id.pdfButton)
+        moreButton = rootView.findViewById(R.id.moreButton)
         pdfButton.setOnClickListener {
-       //     Toast.makeText(requireContext(), "pdf추출!", Toast.LENGTH_SHORT).show()
             createPdf()
+        }
+        moreButton.setOnClickListener {
+            val dayInfo_fragment = DayInfo_fragment.newInstance()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.mainNaviFragmentContainer, dayInfo_fragment)
+                .addToBackStack(null)
+                .commit()
         }
         val dateFormat = SimpleDateFormat("MMdd")
         val formattedDate = dateFormat.format(currentDate)
@@ -152,20 +161,21 @@ class DiaryRead_fragment : Fragment() {
             Toast.makeText(requireContext(), "PDF 저장 실패", Toast.LENGTH_SHORT).show()
         }
     }
-
     private fun getBitmap(yOffset: Int, height: Int): Bitmap {
-        // 스크롤 뷰의 일부 영역을 캡처하여 그립니다.
-        val bitmap = Bitmap.createBitmap(rootView.width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG or Paint.FILTER_BITMAP_FLAG)
-
         val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
         val contentView = scrollView.getChildAt(0)
 
         val srcRect = Rect(0, yOffset, rootView.width, yOffset + height)
+
+        val bitmap = Bitmap.createBitmap(rootView.width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        val paint = Paint()
         contentView.draw(canvas)
-        return bitmap
+
+        return Bitmap.createBitmap(bitmap, 0, 0, srcRect.width(), height)
     }
+
 
 
 }
