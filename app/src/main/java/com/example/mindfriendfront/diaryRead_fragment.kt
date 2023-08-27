@@ -18,10 +18,31 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Date
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.util.Calendar
+import java.util.Locale
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.pdf.PdfDocument
+import android.widget.ImageButton
+import androidx.core.content.ContentProviderCompat.requireContext
 
 
-class diaryRead_fragment : Fragment() {
+class diaryRead_fragment : Fragment(){
+    private lateinit var pdfButton: ImageButton
+    private lateinit var moreButton: ImageButton
+    private lateinit var rootView: View
     companion object {
+        private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
         private const val ARG_SELECTED_DATE = "selectedDate"
 
         fun newInstance(selectedDate: Long): diaryRead_fragment {
@@ -38,15 +59,16 @@ class diaryRead_fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_diary_read_fragment, container, false)
         val selectedDateMillis = arguments?.getLong(ARG_SELECTED_DATE) ?: 0
+        rootView = inflater.inflate(R.layout.fragment_diary_read_fragment, container, false)
 
         val selectedDate = Date(selectedDateMillis)
         Log.e("Diarydate", selectedDate.toString())
-
-        val dateTextView: TextView = view.findViewById(R.id.date) // 'view' 추가
-        val diaryText: TextView = view.findViewById(R.id.uploadText) // 'view' 추가
-        val profile : CircleImageView = view.findViewById(R.id.circle_profile) // 'view' 추가
+        pdfButton = rootView.findViewById(R.id.pdfButton)
+        moreButton = rootView.findViewById(R.id.moreButton)
+        val dateTextView: TextView = rootView.findViewById(R.id.date) // 'view' 추가
+        val diaryText: TextView = rootView.findViewById(R.id.uploadText) // 'view' 추가
+        val profile : CircleImageView = rootView.findViewById(R.id.circle_profile) // 'view' 추가
 
         val dateFormat = SimpleDateFormat("MMdd")
         val formattedDate = dateFormat.format(selectedDate)
@@ -87,8 +109,126 @@ class diaryRead_fragment : Fragment() {
                 Toast.makeText(requireContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
             }
         })
+        pdfButton.setOnClickListener {
+            createPdf()
+        }
+        moreButton.setOnClickListener {
+            val dayInfo_fragment = DayInfo_fragment.newInstance()
 
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.mainNaviFragmentContainer, dayInfo_fragment)
+                .addToBackStack(null)
+                .commit()
+        }
         return view
     }
+
+private fun checkAndRequestPermission() {
+    if (ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
+        )
+    } else {
+        saveAsPdf()
+    }
+}
+override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveAsPdf() // 권한이 허용되었을 때 saveAsPdf 함수 호출
+        } else {
+            // 권한이 거부되었을 때 처리
+            Toast.makeText(requireContext(), "권한이 거부되었습니다. PDF를 생성할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+private fun createPdf() {
+    if (ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        Toast.makeText(requireContext(), "PDF 저장 권한이 필요합니다.", Toast.LENGTH_LONG).show()
+
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
+        )
+    } else {
+        saveAsPdf()
+    }
+}
+
+private fun getFormattedDate(): String {
+    val calendar = Calendar.getInstance()
+    val dateFormat = SimpleDateFormat("yyMMdd", Locale.getDefault())
+    return dateFormat.format(calendar.time)
+}
+private fun getFullContentHeight(): Int {
+    val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
+    val contentView = scrollView.getChildAt(0)
+    return contentView.height
+}
+private fun saveAsPdf() {
+
+    val pdfDocument = PdfDocument()
+    val pageInfo = PdfDocument.PageInfo.Builder(rootView.width, rootView.height, 1).create()
+
+    // 전체 콘텐츠 높이 측정
+    val totalHeight = getFullContentHeight()
+    var yOffset = 0
+
+    while (yOffset < totalHeight) {
+        val page = pdfDocument.startPage(pageInfo)
+        val canvas = page.canvas
+
+        // 스크롤 뷰의 내용을 그림
+        val dstRect = Rect(0, 0, rootView.width, pageInfo.pageHeight)
+
+        val bitmap = getBitmap(yOffset, dstRect.height())
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+
+        pdfDocument.finishPage(page)
+        yOffset += dstRect.height()
+    }
+
+    val fileName = "example.pdf"
+    val file = File(requireContext().getExternalFilesDir(null), fileName)
+    try {
+        val outputStream = FileOutputStream(file)
+        pdfDocument.writeTo(outputStream)
+        pdfDocument.close()
+
+        Toast.makeText(requireContext(), "PDF 저장 완료: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+    } catch (e: IOException) {
+        e.printStackTrace()
+        Toast.makeText(requireContext(), "PDF 저장 실패", Toast.LENGTH_SHORT).show()
+    }
+}
+private fun getBitmap(yOffset: Int, height: Int): Bitmap {
+    val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
+    val contentView = scrollView.getChildAt(0)
+
+    val srcRect = Rect(0, yOffset, rootView.width, yOffset + height)
+
+    val bitmap = Bitmap.createBitmap(rootView.width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+
+    val paint = Paint()
+    contentView.draw(canvas)
+
+    return Bitmap.createBitmap(bitmap, 0, 0, srcRect.width(), height)
+}
+
+
 
 }
