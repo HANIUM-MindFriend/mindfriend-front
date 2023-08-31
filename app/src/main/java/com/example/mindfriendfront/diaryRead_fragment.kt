@@ -59,16 +59,19 @@ class diaryRead_fragment : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // 기존 코드와 동일
+        val view = inflater.inflate(R.layout.fragment_diary_read_fragment, container, false)
         val selectedDateMillis = arguments?.getLong(ARG_SELECTED_DATE) ?: 0
-        rootView = inflater.inflate(R.layout.fragment_diary_read_fragment, container, false)
+        rootView = view  // rootView를 초기화
 
+        pdfButton = rootView.findViewById(R.id.pdfButton)
         val selectedDate = Date(selectedDateMillis)
         Log.e("Diarydate", selectedDate.toString())
         pdfButton = rootView.findViewById(R.id.pdfButton)
         moreButton = rootView.findViewById(R.id.moreButton)
-        val dateTextView: TextView = rootView.findViewById(R.id.date) // 'view' 추가
-        val diaryText: TextView = rootView.findViewById(R.id.uploadText) // 'view' 추가
-        val profile : CircleImageView = rootView.findViewById(R.id.circle_profile) // 'view' 추가
+        val dateTextView: TextView = view.findViewById(R.id.date) // 'view' 추가
+        val diaryText: TextView = view.findViewById(R.id.uploadText) // 'view' 추가
+        val profile : CircleImageView = view.findViewById(R.id.circle_profile) // 'view' 추가
 
         val dateFormat = SimpleDateFormat("MMdd")
         val formattedDate = dateFormat.format(selectedDate)
@@ -109,12 +112,15 @@ class diaryRead_fragment : Fragment(){
                 Toast.makeText(requireContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
             }
         })
+
+
         pdfButton.setOnClickListener {
-            createPdf()
+
+            checkAndRequestPermission() // 권한 확인 및 요청
         }
+
         moreButton.setOnClickListener {
             val dayInfo_fragment = DayInfo_fragment.newInstance()
-
             parentFragmentManager.beginTransaction()
                 .replace(R.id.mainNaviFragmentContainer, dayInfo_fragment)
                 .addToBackStack(null)
@@ -123,87 +129,70 @@ class diaryRead_fragment : Fragment(){
         return view
     }
 
-private fun checkAndRequestPermission() {
-    if (ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED
-    ) {
-
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
-        )
-    } else {
-        saveAsPdf()
-    }
-}
-override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            saveAsPdf() // 권한이 허용되었을 때 saveAsPdf 함수 호출
+    private fun checkAndRequestPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
+            )
         } else {
-            // 권한이 거부되었을 때 처리
-            Toast.makeText(requireContext(), "권한이 거부되었습니다. PDF를 생성할 수 없습니다.", Toast.LENGTH_SHORT).show()
+
+            saveAsPdf()
         }
     }
-}
-private fun createPdf() {
-    if (ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
-        Toast.makeText(requireContext(), "PDF 저장 권한이 필요합니다.", Toast.LENGTH_LONG).show()
-
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE
-        )
-    } else {
-        saveAsPdf()
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveAsPdf() // 권한이 허용된 경우에만 PDF 저장 실행
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "권한이 거부되었습니다. PDF를 생성할 수 없습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
-}
-
-private fun getFormattedDate(): String {
-    val calendar = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("yyMMdd", Locale.getDefault())
-    return dateFormat.format(calendar.time)
-}
-private fun getFullContentHeight(): Int {
-    val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
-    val contentView = scrollView.getChildAt(0)
-    return contentView.height
-}
-private fun saveAsPdf() {
-
-    val pdfDocument = PdfDocument()
-    val pageInfo = PdfDocument.PageInfo.Builder(rootView.width, rootView.height, 1).create()
-
-    // 전체 콘텐츠 높이 측정
-    val totalHeight = getFullContentHeight()
-    var yOffset = 0
-
-    while (yOffset < totalHeight) {
-        val page = pdfDocument.startPage(pageInfo)
-        val canvas = page.canvas
-
-        // 스크롤 뷰의 내용을 그림
-        val dstRect = Rect(0, 0, rootView.width, pageInfo.pageHeight)
-
-        val bitmap = getBitmap(yOffset, dstRect.height())
-        canvas.drawBitmap(bitmap, 0f, 0f, null)
-
-        pdfDocument.finishPage(page)
-        yOffset += dstRect.height()
+    private fun getFullContentHeight(scrollView: NestedScrollView): Int {
+        val contentView = scrollView.getChildAt(0)
+        return contentView.height
     }
+    private fun saveAsPdf() {
+        val pdfDocument = PdfDocument()
+        val pageInfo = PdfDocument.PageInfo.Builder(rootView.width, rootView.height, 1).create()
+
+        val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
+        val totalHeight = getFullContentHeight(scrollView)
+        var yOffset = 0
+
+        while (yOffset < totalHeight) {
+            val page = pdfDocument.startPage(pageInfo)
+            val canvas = page.canvas
+
+            val dstRect = Rect(0, 0, rootView.width, pageInfo.pageHeight)
+
+            val bitmap = getBitmap(yOffset, dstRect.height())
+            canvas.drawBitmap(bitmap, 0f, 0f, null)
+
+            pdfDocument.finishPage(page)
+            yOffset += dstRect.height()
+        }
 
     val fileName = "example.pdf"
     val file = File(requireContext().getExternalFilesDir(null), fileName)
     try {
+
         val outputStream = FileOutputStream(file)
         pdfDocument.writeTo(outputStream)
         pdfDocument.close()
@@ -214,20 +203,19 @@ private fun saveAsPdf() {
         Toast.makeText(requireContext(), "PDF 저장 실패", Toast.LENGTH_SHORT).show()
     }
 }
-private fun getBitmap(yOffset: Int, height: Int): Bitmap {
-    val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
-    val contentView = scrollView.getChildAt(0)
+    private fun getBitmap(yOffset: Int, height: Int): Bitmap {
+        val scrollView = rootView.findViewById<NestedScrollView>(R.id.pdfContainer)
+        val contentView = scrollView.getChildAt(0)
 
-    val srcRect = Rect(0, yOffset, rootView.width, yOffset + height)
+        val srcRect = Rect(0, yOffset, rootView.width, yOffset + height)
 
-    val bitmap = Bitmap.createBitmap(rootView.width, height, Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(bitmap)
+        val bitmap = Bitmap.createBitmap(rootView.width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
 
-    val paint = Paint()
-    contentView.draw(canvas)
+        contentView.draw(canvas)  // 수정: contentView.draw(canvas)로 변경
 
-    return Bitmap.createBitmap(bitmap, 0, 0, srcRect.width(), height)
-}
+        return Bitmap.createBitmap(bitmap, 0, 0, srcRect.width(), height)
+    }
 
 
 
