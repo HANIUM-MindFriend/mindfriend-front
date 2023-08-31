@@ -9,15 +9,15 @@
         android:id="@+id/chatbot_view"
         android:layout_width="match_parent"
         android:layout_height="92dp"
-        android:layout_marginTop="592dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="572dp"
+        android:layout_weight="1"
         android:background="#E6F4F6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:windowSoftInputMode="adjustResize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
 
-        android:layout_weight="1"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/chatbot_text"
@@ -32,8 +32,10 @@
 
     <EditText
         android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="291dp"
+        android:layout_height="468dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="68dp"
         android:ems="10"
         android:inputType="text"
         android:text="Name"
