@@ -61,10 +61,10 @@
         android:name=".Calendar"
         android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".NaviActivity"
             android:exported="false" />
         <activity
-            android:name=".NaviActivity"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
