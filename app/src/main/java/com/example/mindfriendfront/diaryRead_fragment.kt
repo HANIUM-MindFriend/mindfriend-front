@@ -34,6 +34,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.pdf.PdfDocument
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.core.content.ContentProviderCompat.requireContext
 
 
@@ -71,6 +72,8 @@ class diaryRead_fragment : Fragment(){
         moreButton = rootView.findViewById(R.id.moreButton)
         val dateTextView: TextView = view.findViewById(R.id.date) // 'view' 추가
         val diaryText: TextView = view.findViewById(R.id.uploadText) // 'view' 추가
+        val diaryTitle: TextView = view.findViewById(R.id.editTitle)
+        val diaryImg: ImageView = view.findViewById(R.id.imageView)
         val profile : CircleImageView = view.findViewById(R.id.circle_profile) // 'view' 추가
 
         val dateFormat = SimpleDateFormat("MMdd")
@@ -92,6 +95,11 @@ class diaryRead_fragment : Fragment(){
 
                     diaryData?.let {
                         diaryText.text = it.content // 일기 내용 설정
+                        diaryTitle.text=it.title
+                        Glide.with(requireContext())
+                            .load(it.image) // 이미지 데이터를 로드
+                            .into(diaryImg) // diaryImg에 이미지 표시
+
                         // 이미지 라이브러리를 사용하여 profile 이미지 설정
                         Glide.with(requireContext()) // 'requireContext()'로 수정
                             .load(diaryData.profileImg)
