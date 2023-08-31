@@ -68,6 +68,9 @@
             android:exported="false" />
         <activity
             android:name=".ChatBot"
+            android:exported="false" />
+        <activity
+            android:name=".ChatbotTest"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
             <intent-filter>
