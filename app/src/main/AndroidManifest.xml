@@ -66,6 +66,9 @@
             android:exported="false" />
         <activity
             android:name=".Login"
+            android:exported="false" />
+        <activity
+            android:name=".Moodtracker"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
