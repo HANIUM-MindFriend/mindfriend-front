@@ -24,16 +24,19 @@ class Analyze : AppCompatActivity() {
         gridView.adapter = adapter
 
         //각 칸마다 색깔 설정하기
-//        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, numbers) {
-//            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//                val view = super.getView(position, convertView, parent) as TextView
-//                val bgColor = if (position % 2 == 0) Color.RED else Color.BLUE
+        //일단 두 가지 색 변갈아서 나오게 짜뒀음
+        val adapter2 = object : ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, numbers) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent) as TextView
+                val bgColor = if (position % 2 == 0) "#FFBB5C" else "#FF9B50"
 //                view.setBackgroundColor(bgColor)
-//                return view
-//            }
-//        }
+                view.setBackgroundColor(Color.parseColor(bgColor))
+                return view
+            }
+        }
 
         gridView.adapter = adapter
+        gridView.adapter = adapter2
     }
 }
 

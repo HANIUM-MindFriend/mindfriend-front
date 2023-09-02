@@ -19,9 +19,6 @@
             android:name=".DayInfo"
             android:exported="false" />
         <activity
-            android:name=".Analyze"
-            android:exported="false" />
-        <activity
             android:name=".Login"
             android:exported="false" />
 <!--        <activity-->
@@ -36,6 +33,10 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Popup"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Analyze"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
