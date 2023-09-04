@@ -15,7 +15,7 @@ class ChatBot : AppCompatActivity() {
         setContentView(R.layout.activity_chatbot)
 
 
-        chat_text = findViewById(R.id.chatbot_text)
+        chat_text = findViewById(R.id.chatbotText)
 
         backgroundThread = Thread {
             while (running) {

@@ -67,10 +67,10 @@
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".ChatBot"
+            android:name=".ChatbotTest"
             android:exported="false" />
         <activity
-            android:name=".ChatbotTest"
+            android:name=".ChatBot"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
             <intent-filter>

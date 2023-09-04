@@ -1,44 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/chatbot_view"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
-        android:layout_marginTop="572dp"
-        android:layout_weight="1"
-        android:background="#E6F4F6"
-        android:windowSoftInputMode="adjustResize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_height="wrap_content">
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:background="#AB98DC"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"/>
 
-    <TextView
-        android:id="@+id/chatbot_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/chatbot_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/chatbot_view"
-        app:layout_constraintVertical_bias="0.492" />
+<!--        <View-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:background="#E4D972"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="200dp"/>-->
+
+<!--        <View-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:background="#2A7495"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"/>-->
+    </LinearLayout>
+
 
     <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="291dp"
-        android:layout_height="468dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="68dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:id="@+id/chatbotText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</RelativeLayout>
