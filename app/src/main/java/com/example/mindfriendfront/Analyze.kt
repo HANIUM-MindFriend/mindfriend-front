@@ -17,7 +17,15 @@ class Analyze : AppCompatActivity() {
         val gridView: GridView = findViewById(R.id.gridView)
 
         // 1부터 30까지의 숫자를 가지는 배열 생성
-        val numbers = Array(30) { i -> (i + 1).toString() }
+        var month = 9 //임의로 정해둠
+        var days = -1
+        if (month == 2)
+            days = 28
+        else if ((month <= 8) && (month % 1 == 1) || (month > 9) && (month % 1 == 0))
+            days = 31
+        else
+            days = 30
+        val numbers = Array(days) { i -> (i + 1).toString() }
 
         // ArrayAdapter를 사용하여 GridView에 데이터 설정
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, numbers)
