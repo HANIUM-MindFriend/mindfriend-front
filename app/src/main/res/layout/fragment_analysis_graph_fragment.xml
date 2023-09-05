@@ -18,7 +18,8 @@
             <!--        상단바 -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal">
 
                 <!-- 메뉴 버튼 -->
                 <ImageButton
@@ -31,17 +32,35 @@
                     android:src="@drawable/ic_menu"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="12dp" />
-
-                <!-- 통계 문구 -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <ImageButton
+                    android:id="@+id/downButton"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_toEndOf="@+id/menuButton"
                     android:layout_centerVertical="true"
-                    android:text="통계"
+                    android:src="@drawable/down_arrow"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Up Button" />
+                <TextView
+                    android:id="@+id/yymm"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/downButton"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
                     android:textStyle="bold"
                     android:textColor="#18308D"
                     android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/upButton"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_toEndOf="@+id/yymm"
+                android:layout_centerVertical="true"
+                android:src="@drawable/up_arrow"
+                android:contentDescription="Up Button" />
 
                 <!-- 오른쪽 여백을 채우기 위한 빈 뷰 -->
                 <View

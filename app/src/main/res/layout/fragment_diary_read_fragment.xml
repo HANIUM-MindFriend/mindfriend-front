@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainNaviFragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F5FF">
@@ -90,21 +91,9 @@
                         android:layout_marginTop="23dp"
                         android:layout_marginRight="20dp"
                         android:background="@android:color/transparent"
-                        android:onClick="onClick"
                         android:scaleType="fitStart"
                         android:src="@drawable/pdfbtn" />
 
-                    <!--                    <ImageButton-->
-                    <!--                        android:id="@+id/player_button"-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="35dp"-->
-                    <!--                        android:layout_marginLeft="10dp"-->
-                    <!--                        android:layout_marginTop="15dp"-->
-                    <!--                        android:layout_weight="0.17"-->
-                    <!--                        android:background="@android:color/transparent"-->
-                    <!--                        android:onClick="onClick"-->
-                    <!--                        android:scaleType="fitStart"-->
-                    <!--                        android:src="@drawable/player_on" />-->
 
                 </LinearLayout>
 
@@ -137,17 +126,72 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/uploadText"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="700dp"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:id="@+id/title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical|start"
+                                android:text="     제목: "
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="17sp" />
+
+                            <EditText
+                                android:id="@+id/editTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@drawable/layout_upload_background"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="17sp"
+                                android:gravity="top" />
+                        </LinearLayout>
+
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_below="@+id/text"
+                            android:layout_above="@+id/write_ib_upload"
                             android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
                             android:layout_marginRight="20dp"
-                            android:layout_weight="0.7"
-                            android:background="@drawable/layout_upload_background"
-                            android:gravity="top" />
+                            android:layout_marginBottom="20dp">
+
+                            <TextView
+                                android:id="@+id/uploadText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_weight="0.7"
+                                android:background="@drawable/layout_upload_background"
+                                android:gravity="top" />
+                        </ScrollView>
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="0dp"
+                            android:padding="16dp"
+                            android:scaleType="centerInside"
+                            app:layout_constraintBottom_toTopOf="@id/calendarBtn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+
+
 
                     </LinearLayout>
 
