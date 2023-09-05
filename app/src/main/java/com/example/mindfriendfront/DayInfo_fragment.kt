@@ -25,10 +25,14 @@ class DayInfo_fragment : Fragment() {
         colorView = view.findViewById(R.id.colorView)
 
         val btnBack: ImageButton = view.findViewById(R.id.btnBack)
+
+        colorView = view.findViewById(R.id.colorView)
+
         btnBack.setOnClickListener {
-            // changeViewColor 함수 호출하여 배경색 변경
-            changeViewColor(colorView, "value1")
+            // 백 스택에서 이전 Fragment로 돌아가기
+            activity?.supportFragmentManager?.popBackStack()
         }
+
 
         return view
     }
