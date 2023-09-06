@@ -255,6 +255,8 @@ class SignupActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     // 성공적으로 응답 받았을 때 처리
                     Toast.makeText(this@SignupActivity, "회원가입에 성공하셨습니다. 로그인페이지로 이동합니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@SignupActivity, Login::class.java)
+                    startActivity(intent)
                 } else {
                     // 응답은 성공적으로 받았지만 서버에서 오류 응답을 보낸 경우 처리
                     val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}"
