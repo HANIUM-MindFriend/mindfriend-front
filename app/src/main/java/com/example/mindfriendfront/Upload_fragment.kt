@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,8 +21,10 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -65,11 +68,14 @@ class Upload_fragment : Fragment() {
     private lateinit var imageView: ImageView
     private lateinit var title : EditText
     private lateinit var content : EditText
-
+    private lateinit var relativeLayout: RelativeLayout
     private val CAMERA_REQUEST_CODE = 1
     private val GALLERY_REQUEST_CODE = 2
     private var imageFilePath: String? = null
     private var previousText: String = ""
+
+
+
     companion object {
         fun newInstance(): Upload_fragment {
             return Upload_fragment()
@@ -83,6 +89,7 @@ class Upload_fragment : Fragment() {
         val rootView = inflater.inflate(R.layout.activity_upload, container, false)
         imageView = rootView.findViewById(R.id.imageView) // ImageView 초기화 추가
         val dateTextView: TextView = rootView.findViewById(R.id.date)
+        relativeLayout = rootView.findViewById(R.id.relativeLayout)
         title= rootView.findViewById(R.id.editTitle)
         content = rootView.findViewById(R.id.editContent)
         val cameraImageButton: ImageButton = rootView.findViewById(R.id.camera_button)
@@ -94,6 +101,7 @@ class Upload_fragment : Fragment() {
 
         val dateFormat = SimpleDateFormat("yyyy. MM. dd")
         val formattedDate = dateFormat.format(currentDate)
+
 
         dateTextView.text = formattedDate
 
@@ -159,7 +167,7 @@ class Upload_fragment : Fragment() {
                 stopAudio()
                 playerImageButton.setImageResource(R.drawable.player_on)
             } else {
-                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.lawrence)
+                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.thejazzpiano)
                 mediaPlayer?.setOnCompletionListener {
                     stopAudio()
                     playerImageButton.setImageResource(R.drawable.player_on)
@@ -358,6 +366,89 @@ class Upload_fragment : Fragment() {
                     val singleResponse = response.body()
                     if (singleResponse != null) {
                         Toast.makeText(requireContext(), diaryLine + ": " + singleResponse.data.emotion, Toast.LENGTH_SHORT).show()
+                        if (singleResponse.data.emoIdx == 1){
+                            //분노
+                            Log.e("Emo", "angry")
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#D4F0F0")) //하늘
+                            //pianomoment
+                            if (mediaPlayer != null && mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.pianomoment)
+                                mediaPlayer?.start()
+                            }
+
+
+                        }
+                        else if (singleResponse.data.emoIdx == 2){
+                            //혐오
+                            Log.e("Emo", "disgust")
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#CCE2CB")) //초록
+                            //onceagain
+                            if (mediaPlayer != null && mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.onceagain)
+                                mediaPlayer?.start()
+                            }
+
+
+                        }
+                        else if (singleResponse.data.emoIdx == 3){
+                            //두려움
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#B6C1A9")) //찐초록
+                            //tenderness
+                            if (mediaPlayer != null && mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.tenderness)
+                                mediaPlayer?.start()
+                            }
+
+
+                        }
+                        else if (singleResponse.data.emoIdx == 4){
+                            //행복
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#FF968A")) //빨강
+                            //dreams
+                            if (mediaPlayer != null &&  mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.dreams)
+                                mediaPlayer?.start()
+                            }
+
+                        }
+                        else if (singleResponse.data.emoIdx == 5){
+                            //중립
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#F2F5FF")) //원래
+                            //thejazzpaino
+                            if (mediaPlayer != null && mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.thejazzpiano)
+                                mediaPlayer?.start()
+                            }
+
+                        }
+                        else if (singleResponse.data.emoIdx == 6){
+                            //슬픔
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#FFD8BE")) //주황
+                            //lawrence
+                            if (mediaPlayer != null && mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.lawrence)
+                                mediaPlayer?.start()
+                            }
+
+                        }
+                        else{
+                            //놀람
+                            relativeLayout?.setBackgroundColor(Color.parseColor("#F6EAC2")) //노랑
+                            //love
+                            if (mediaPlayer != null && mediaPlayer!!.isPlaying){
+                                mediaPlayer?.release()
+                                mediaPlayer = MediaPlayer.create(requireContext(), R.raw.love)
+                                mediaPlayer?.start()
+                            }
+
+
+                        }
                     }
                 } else {
                     // 실패한 응답 처리
