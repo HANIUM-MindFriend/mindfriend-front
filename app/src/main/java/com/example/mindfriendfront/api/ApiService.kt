@@ -2,6 +2,8 @@ package com.example.mindfriendfront.api
 
 
 import com.example.mindfriendfront.data.DiaryGetResponse
+import com.example.mindfriendfront.data.DiarySingle
+import com.example.mindfriendfront.data.DiarySingleResponse
 import com.example.mindfriendfront.data.DiaryUpload
 import com.example.mindfriendfront.data.DuplicateResponse
 import com.example.mindfriendfront.data.LoginResponse
@@ -9,6 +11,7 @@ import com.example.mindfriendfront.data.UserDuplicate
 import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.data.UserLogin
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -23,6 +26,12 @@ interface ApiService {
     fun chkDuplicate(@Body userData: UserDuplicate) : Call<DuplicateResponse>
     @POST("auth/sign-in")
     fun loginUser(@Body userData: UserLogin): Call<LoginResponse>
+
+    @Multipart
+    @POST("diary/write/emo")
+    fun uploadSingleDiary(
+        @Part("postAiDiary") content: RequestBody
+    ): Call<DiarySingleResponse>
 
     @GET("diary/read")
     fun getDiary(@Query("date") date: String): Call<DiaryGetResponse>

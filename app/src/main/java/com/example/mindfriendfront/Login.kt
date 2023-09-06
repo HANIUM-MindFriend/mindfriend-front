@@ -72,6 +72,8 @@ class Login : AppCompatActivity() {
         val join = findViewById<TextView>(R.id.join)
         join.setOnClickListener {
             Toast.makeText(applicationContext, "회원가입 클릭", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
 
         val findId = findViewById<TextView>(R.id.findId)

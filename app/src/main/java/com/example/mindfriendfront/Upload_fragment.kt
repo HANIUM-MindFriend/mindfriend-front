@@ -14,7 +14,11 @@ import android.view.ViewGroup
 import android.media.MediaPlayer
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -24,12 +28,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.example.mindfriendfront.data.DiarySingle
+import com.example.mindfriendfront.data.DiarySingleResponse
 import com.example.mindfriendfront.data.DiaryUpload
+import com.example.mindfriendfront.data.LoginResponse
+import com.example.mindfriendfront.data.UserLogin
 import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.network.ApiServiceFactory
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import org.w3c.dom.Text
 import retrofit2.Call
@@ -59,6 +69,7 @@ class Upload_fragment : Fragment() {
     private val CAMERA_REQUEST_CODE = 1
     private val GALLERY_REQUEST_CODE = 2
     private var imageFilePath: String? = null
+    private var previousText: String = ""
     companion object {
         fun newInstance(): Upload_fragment {
             return Upload_fragment()
@@ -85,6 +96,30 @@ class Upload_fragment : Fragment() {
         val formattedDate = dateFormat.format(currentDate)
 
         dateTextView.text = formattedDate
+
+        content.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                val currentText = content.text.toString()
+                if (currentText.isNotEmpty()) {
+                    val newText = "$currentText\n" // 현재 텍스트에 엔터를 추가하여 다음 줄로 넘어가도록 합니다.
+                    content.text.clear() // 기존 텍스트를 지우고
+                    content.append(newText) // 새로운 텍스트를 추가합니다.
+                    content.setSelection(content.length()) // 커서를 텍스트 끝으로 이동시켜 다음 줄에 텍스트를 입력할 수 있게 합니다.
+                    val textLines = currentText.split("\n") // 엔터(\n)로 텍스트를 나눕니다.
+                    if (textLines.isNotEmpty()) {
+                        val lastLine = textLines.last() // 마지막 줄을 추출합니다.
+                        uploadSingleDiaryRequest(lastLine) // 마지막 줄을 업로드합니다.
+                    }
+
+                }
+                true
+            } else {
+                false
+            }
+        }
+
+
+
 
         cameraImageButton.setOnClickListener {
             // 카메라 버튼 클릭 시 반응
@@ -309,4 +344,38 @@ class Upload_fragment : Fragment() {
             }
         })
     }
+
+    private fun uploadSingleDiaryRequest(diaryLine: String) {
+        val json = "{\"content\":\"$diaryLine\"}"
+        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), json)
+        val content = "{\"content\":\"$diaryLine\"}".toRequestBody("application/json".toMediaTypeOrNull())
+
+        val call = ApiServiceFactory.apiService.uploadSingleDiary(content)
+
+        call.enqueue(object : Callback<DiarySingleResponse> {
+            override fun onResponse(call: Call<DiarySingleResponse>, response: Response<DiarySingleResponse>) {
+                if (response.isSuccessful) {
+                    val singleResponse = response.body()
+                    if (singleResponse != null) {
+                        Toast.makeText(requireContext(), diaryLine + ": " + singleResponse.data.emotion, Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // 실패한 응답 처리
+                    val errorBody = response.errorBody()?.string()
+                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
+                    Log.e("API_RESPONSE", message)
+                    Toast.makeText(requireContext(), "감성 분석 요청에 실패하셨습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<DiarySingleResponse>, t: Throwable) {
+                // 네트워크 실패 처리
+                Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
+                Toast.makeText(requireContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
+
 }
