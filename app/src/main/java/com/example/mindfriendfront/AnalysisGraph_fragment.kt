@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.GridView
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -28,6 +30,7 @@ class AnalysisGraph_fragment : Fragment() {
     private lateinit var downButton: ImageButton
     private var currentYear=0
     private var currentMonth=0
+    private lateinit var gridView: GridView
 //    val (currentYear, currentMonth) = getCurrentYearAndMonth()
 
     var v: View? = null
@@ -44,8 +47,10 @@ class AnalysisGraph_fragment : Fragment() {
         yymmTextView = v!!.findViewById(R.id.yymm)
         upButton = v!!.findViewById(R.id.upButton)
         downButton = v!!.findViewById(R.id.downButton)
+        gridView = v!!.findViewById(R.id.gridView)
         getCurrentYearAndMonth()
         updateYymmText()
+        Moodtracker()
 
         // Up 버튼 클릭 시 처리
         upButton.setOnClickListener {
@@ -103,5 +108,30 @@ class AnalysisGraph_fragment : Fragment() {
     }
 
     // 예제에서 사용하는 곳에서 호출하여 값을 얻을 수 있음
+
+    //무드트래커
+    fun Moodtracker() {
+        // 1부터 30까지의 숫자를 가지는 배열 생성
+        val numbers = Array(30) { i -> (i + 1).toString() }
+
+        // ArrayAdapter를 사용하여 GridView에 데이터 설정
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, numbers)
+        gridView.adapter = adapter
+
+        //각 칸마다 색깔 설정하기
+        //일단 두 가지 색 변갈아서 나오게 짜뒀음
+        val adapter2 = object : ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, numbers) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent) as TextView
+                val bgColor = if (position % 2 == 0) "#FFBB5C" else "#FF9B50"
+                view.setBackgroundColor(Color.parseColor(bgColor))
+                view.textSize = 10f
+                return view
+            }
+        }
+
+        gridView.adapter = adapter
+        gridView.adapter = adapter2
+    }
 
 }
