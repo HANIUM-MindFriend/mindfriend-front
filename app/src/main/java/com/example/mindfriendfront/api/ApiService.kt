@@ -1,6 +1,7 @@
 package com.example.mindfriendfront.api
 
 
+import com.example.mindfriendfront.data.CalendarResponse
 import com.example.mindfriendfront.data.DiaryGetResponse
 import com.example.mindfriendfront.data.DiarySingle
 import com.example.mindfriendfront.data.DiarySingleResponse
@@ -32,6 +33,9 @@ interface ApiService {
     fun uploadSingleDiary(
         @Part("postAiDiary") content: RequestBody
     ): Call<DiarySingleResponse>
+
+    @GET("diary/date/search")
+    fun getCalendar(@Query("yearMonth") yearMonth: String): Call<CalendarResponse>
 
     @GET("diary/read")
     fun getDiary(@Query("date") date: String): Call<DiaryGetResponse>
