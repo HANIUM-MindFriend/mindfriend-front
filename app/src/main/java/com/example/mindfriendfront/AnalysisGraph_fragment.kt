@@ -11,7 +11,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.mindfriendfront.data.DashboardGetResponse
+import com.example.mindfriendfront.data.DashboardResponse
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import java.util.Calendar
 import com.example.mindfriendfront.network.ApiServiceFactory
+import com.github.mikephil.charting.components.XAxis
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -88,7 +89,7 @@ private var angryN = 0.0f;
         }
 
 
-val yymm:String
+        val yymm:String
 
         val apiService = ApiServiceFactory.apiService
         if (currentMonth<10){
@@ -100,14 +101,15 @@ val yymm:String
 
 
 
-        apiService.getDashboard(yearMonth=yymm).enqueue(object : Callback<DashboardGetResponse> {
+        apiService.getDashboard(yearMonth=yymm).enqueue(object : Callback<DashboardResponse> {
 
-            override fun onResponse(call: Call<DashboardGetResponse>, response: Response<DashboardGetResponse>) {
+            override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
                 Log.e("Diarydate", yymm)
 
                 if (response.isSuccessful) {
                     val emoGraphResponse = response.body()
-                    val emoGraphData = emoGraphResponse?.graphStatistics
+                    val emoGraphData = emoGraphResponse?.data?.graphStatistics
+
                     emoGraphData?.let {
                         angryN = (it.angry).toFloat()
                         disgustN = (it.disgust).toFloat()
@@ -117,6 +119,64 @@ val yymm:String
                         sadnessN = (it.sadness).toFloat()
                         surpriseN = (it.surprise).toFloat()
                           }
+                    Log.e("API_RESPONSE", "성공")
+                    val entries: MutableList<BarEntry> = ArrayList()
+                    entries.add(BarEntry(0f, angryN, "angry"))
+                    entries.add(BarEntry(1f, disgustN, "disgust"))
+                    entries.add(BarEntry(2f, fearN, "fear"))
+                    entries.add(BarEntry(3f, happinessN, "happiness"))
+                    entries.add(BarEntry(4f, neutralN, "neutral"))
+                    entries.add(BarEntry(4f, sadnessN, "sadness"))
+                    entries.add(BarEntry(4f, surpriseN, "surprise"))
+                    val dataSet = BarDataSet(entries, null) // 색 샘플 부분을 삭제
+
+                    val colors = listOf(
+                        Color.parseColor("#FFF59E"),
+                        Color.parseColor("#FF9B7B"),
+                        Color.parseColor("#9CD0FF"),
+                        Color.parseColor("#C2EC67"),
+                        Color.parseColor("#E2CCFF"),
+                        Color.parseColor("#C2EC67"),
+                        Color.parseColor("#FF9B7B")
+                    )
+                    dataSet.colors = colors
+
+                    val barData = BarData(dataSet)
+                    barChart!!.data = barData
+                    val labels = listOf("화남", "역겨움", "공포", "행복","평온함", "슬픔","놀람")
+                    dataSet.valueFormatter = IndexAxisValueFormatter(labels)
+
+                    // Customize the chart appearance
+                    barChart!!.apply {
+                        // Disable grid lines
+                        xAxis.setDrawGridLines(false)
+                        axisLeft.setDrawGridLines(false)
+                        axisRight.setDrawGridLines(false)
+
+                        // Disable description label
+                        description.isEnabled = false
+                        legend.isEnabled = false
+
+                        // Set X-axis labels
+                        val xAxisFormatter = IndexAxisValueFormatter(labels)
+                        xAxis.valueFormatter = xAxisFormatter
+                        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
+                        xAxis.granularity = 1f
+
+                        // Set bar label above the bars
+                        dataSet.setDrawValues(true) // 막대 위에 레이블 표시 활성화
+                        dataSet.valueTextColor = Color.BLACK // 레이블 텍스트 색상 설정
+                        dataSet.valueTextSize = 12f // 레이블 텍스트 크기 설정
+
+                        // Disable x-axis and y-axis labels
+                        xAxis.isEnabled = true
+                        axisLeft.isEnabled = false
+                        axisRight.isEnabled = false
+                        barData.barWidth = 0.4f
+
+                        // Invalidate the chart to apply changes
+                        invalidate()
+                    }
                 } else {
                     // 오류 처리
                     val errorBody = response.errorBody()?.string()
@@ -126,7 +186,7 @@ val yymm:String
                 }
             }
 
-            override fun onFailure(call: Call<DashboardGetResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
                 // 네트워크 오류 처리
                 Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
                 Toast.makeText(requireContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
@@ -136,50 +196,7 @@ val yymm:String
 
 
 
-        val entries: MutableList<BarEntry> = ArrayList()
-        entries.add(BarEntry(0f, angryN, "angry"))
-        entries.add(BarEntry(1f, disgustN, "disgust"))
-        entries.add(BarEntry(2f, fearN, "fear"))
-        entries.add(BarEntry(3f, happinessN, "happiness"))
-        entries.add(BarEntry(4f, neutralN, "neutral"))
-        entries.add(BarEntry(4f, sadnessN, "sadness"))
-        entries.add(BarEntry(4f, surpriseN, "surprise"))
-        val dataSet = BarDataSet(entries, null) // 색 샘플 부분을 삭제
 
-        val colors = listOf(
-            Color.parseColor("#FFF59E"),
-            Color.parseColor("#FF9B7B"),
-            Color.parseColor("#9CD0FF"),
-            Color.parseColor("#C2EC67"),
-            Color.parseColor("#E2CCFF"),
-            Color.parseColor("#C2EC67"),
-            Color.parseColor("#FF9B7B")
-        )
-        dataSet.colors = colors
-
-        val barData = BarData(dataSet)
-        barChart!!.data = barData
-        val labels = listOf("화남", "역겨움", "공포", "행복","평온함", "슬픔","놀람")
-        dataSet.valueFormatter = IndexAxisValueFormatter(labels)
-
-        // Customize the chart appearance
-        barChart!!.apply {
-            // Disable grid lines
-            xAxis.setDrawGridLines(false)
-            axisLeft.setDrawGridLines(false)
-            axisRight.setDrawGridLines(false)
-
-            // Disable description label
-            description.isEnabled = false
-            legend.isEnabled = false
-            // Disable x-axis and y-axis labels
-            xAxis.isEnabled = false
-            axisLeft.isEnabled = false
-            axisRight.isEnabled = false
-            barData.barWidth = 0.4f
-            // Invalidate the chart to apply changes
-            invalidate()
-        }
 
         return v
     }
