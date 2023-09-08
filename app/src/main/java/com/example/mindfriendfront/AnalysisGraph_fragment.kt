@@ -14,17 +14,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.mindfriendfront.data.DashboardResponse
+import com.example.mindfriendfront.network.ApiServiceFactory
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import java.util.Calendar
-import com.example.mindfriendfront.network.ApiServiceFactory
-import com.github.mikephil.charting.components.XAxis
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class AnalysisGraph_fragment : Fragment() {
 
@@ -40,9 +40,9 @@ class AnalysisGraph_fragment : Fragment() {
     private var currentYear=0
     private var currentMonth=0
     private lateinit var gridView: GridView
-//    val (currentYear, currentMonth) = getCurrentYearAndMonth()
+    //    val (currentYear, currentMonth) = getCurrentYearAndMonth()
 //        그래프 표기 위한 수치
-private var angryN = 0.0f;
+    private var angryN = 0.0f;
     private var disgustN=0f;
     private var fearN=0f;
     private var happinessN=0f;
@@ -261,4 +261,7 @@ private var angryN = 0.0f;
         gridView.adapter = adapter2
     }
 
+
+
 }
+
