@@ -1,9 +1,10 @@
 package com.example.mindfriendfront.data
 
-import java.time.LocalDateTime
+import java.util.Date
 
-data class GetColorByMonth (
+
+data class MoodTrackerData (
     val diaryIdx: Long,
-    val createdAt: LocalDateTime,
+    val createdAt: Date,
     val mainEmotion: String
 )

@@ -10,7 +10,7 @@ import com.example.mindfriendfront.data.LoginResponse
 import com.example.mindfriendfront.data.UserDuplicate
 import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.data.UserLogin
-import com.example.mindfriendfront.data.DashboardGetResponse
+import com.example.mindfriendfront.data.DashboardResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -41,7 +41,7 @@ interface ApiService {
     fun getDiary(@Query("date") date: String): Call<DiaryGetResponse>
 
     @GET("diary/dash")
-    fun getDashboard(@Query("yearMonth") yearMonth: String): Call<DashboardGetResponse>
+    fun getDashboard(@Query("yearMonth") yearMonth: String): Call<DashboardResponse>
 
     @Multipart
     @POST("/auth/sign-up")

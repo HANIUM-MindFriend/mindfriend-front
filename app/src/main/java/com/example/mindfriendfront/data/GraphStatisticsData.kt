@@ -1,7 +1,7 @@
 package com.example.mindfriendfront.data
 
 
-data class GetEmoGraph (
+data class GraphStatisticsData (
     val angry : Int,
     val disgust : Int,
     val fear : Int,
