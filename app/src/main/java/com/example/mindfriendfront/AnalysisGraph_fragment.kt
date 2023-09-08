@@ -49,13 +49,125 @@ class AnalysisGraph_fragment : Fragment() {
     private var neutralN=0f;
     private var  sadnessN=0f;
     private var surpriseN=0f;
+    private var yymm=""
+    val apiService = ApiServiceFactory.apiService
     var v: View? = null
     var barChart: BarChart? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
 
+    }
+    fun updateChart(){
+
+        // 그래프 업데이트
+        val entries: MutableList<BarEntry> = ArrayList()
+        entries.add(BarEntry(0f, angryN, "angry"))
+        entries.add(BarEntry(1f, disgustN, "disgust"))
+        entries.add(BarEntry(2f, fearN, "fear"))
+        entries.add(BarEntry(3f, happinessN, "happiness"))
+        entries.add(BarEntry(4f, neutralN, "neutral"))
+        entries.add(BarEntry(5f, sadnessN, "sadness"))
+        entries.add(BarEntry(6f, surpriseN, "surprise"))
+        val dataSet = BarDataSet(entries, null)
+
+
+        val colors = listOf(
+            Color.parseColor("#FF7F00"),
+            Color.parseColor("#FF0000"),
+            Color.parseColor("#A374DB"),
+            Color.parseColor("#FFC0CB"),
+            Color.parseColor("#FFFFFF"),
+            Color.parseColor("#50BCDF"),
+            Color.parseColor("#FFFF00")
+        )
+        dataSet.colors = colors
+
+        val barData = BarData(dataSet)
+        barChart!!.data = barData
+        val labels = listOf("분노", "혐오", "두려움", "행복","중립", "슬픔","놀람")
+
+        barChart!!.apply {
+            // Disable grid lines
+            xAxis.setDrawGridLines(false)
+            axisLeft.setDrawGridLines(false)
+            axisRight.setDrawGridLines(false)
+
+            // Disable description label
+            description.isEnabled = false
+            legend.isEnabled = false
+
+            // Set X-axis labels
+            val xAxisFormatter = IndexAxisValueFormatter(labels)
+            xAxis.valueFormatter = xAxisFormatter
+            xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
+            xAxis.granularity = 1f
+            val marginInPixels = -15// 10dp를 픽셀로 변환
+            xAxis.yOffset = marginInPixels.toFloat()
+            // Set bar label above the bars
+            dataSet.setDrawValues(false) // 막대 위에 레이블 표시 활성화
+            dataSet.valueTextColor = Color.BLACK // 레이블 텍스트 색상 설정
+            dataSet.valueTextSize = 9f // 레이블 텍스트 크기 설정
+
+            // Disable x-axis and y-axis labels
+            xAxis.isEnabled = true
+            axisLeft.isEnabled = false
+            axisRight.isEnabled = false
+            barData.barWidth = 0.4f
+
+            // Invalidate the chart to apply changes
+            invalidate()
+        }
+//        barChart!!.data = BarData(dataSet)
+//        barChart!!.invalidate()
+    }
+    fun fetchDataForYearMonth(yearMonth: String) {
+        apiService.getDashboard(yearMonth=yymm).enqueue(object : Callback<DashboardResponse> {
+
+            override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
+                Log.e("Diarydate", yymm)
+
+                if (response.isSuccessful) {
+                    val emoGraphResponse = response.body()
+                    val emoGraphData = emoGraphResponse?.data?.graphStatistics
+
+                    emoGraphData?.let {
+                        // 데이터를 업데이트합니다.
+                        angryN = (it.angry).toFloat()
+                        disgustN = (it.disgust).toFloat()
+                        fearN = (it.fear).toFloat()
+                        happinessN = (it.happiness).toFloat()
+                        neutralN = (it.neutral).toFloat()
+                        sadnessN = (it.sadness).toFloat()
+                        surpriseN = (it.surprise).toFloat()
+                    }
+
+                    updateChart()
+                } else {
+                    // 오류 처리
+                    val errorBody = response.errorBody()?.string()
+                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
+                    Log.e("API_RESPONSE", message)
+                    Toast.makeText(requireContext(), "오류가 발생했습니다. Error Code: "+response.code(), Toast.LENGTH_SHORT).show()
+
+                    angryN = 0f
+                    disgustN = 0f
+                    fearN = 0f
+                    happinessN = 0f
+                    neutralN = 0f
+                    sadnessN = 0f
+                    surpriseN = 0f
+                    updateChart()
+                    }}
+
+            override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                // 네트워크 오류 처리
+                Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
+                Toast.makeText(requireContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,6 +181,11 @@ class AnalysisGraph_fragment : Fragment() {
         gridView = v!!.findViewById(R.id.gridView)
         getCurrentYearAndMonth()
         updateYymmText()
+        fetchDataForYearMonth(yymm)
+
+        Moodtracker()
+
+
 
         // Up 버튼 클릭 시 처리
         upButton.setOnClickListener {
@@ -79,6 +196,8 @@ class AnalysisGraph_fragment : Fragment() {
                 currentYear++
             }
             updateYymmText()
+
+            fetchDataForYearMonth(yymm)
         }
 
         // Down 버튼 클릭 시 처리
@@ -90,6 +209,8 @@ class AnalysisGraph_fragment : Fragment() {
                 currentYear--
             }
             updateYymmText()
+
+            fetchDataForYearMonth(yymm)
         }
 
 
@@ -276,6 +397,11 @@ class AnalysisGraph_fragment : Fragment() {
         // TextView에 현재 연도와 월을 표시
         val yymmText = "${currentYear}년 ${currentMonth}월"
         yymmTextView.text = yymmText
+        yymm = if (currentMonth < 10) {
+            "${currentYear}-0${currentMonth}"
+        } else {
+            "${currentYear}-${currentMonth}"
+        }
     }
     // 현재 년도와 월을 가져오는 함수
     fun getCurrentYearAndMonth(): Pair<Int, Int> {
@@ -287,9 +413,7 @@ class AnalysisGraph_fragment : Fragment() {
         return Pair(year, month)
     }
 
-    // 예제에서 사용하는 곳에서 호출하여 값을 얻을 수 있음
 
-    //무드트래커
     fun Moodtracker() {
         // 1부터 30까지의 숫자를 가지는 배열 생성
         val numbers = Array(30) { i -> (i + 1).toString() }
