@@ -38,7 +38,7 @@ import android.widget.ImageView
 import androidx.core.content.ContentProviderCompat.requireContext
 
 
-class diaryRead_fragment : Fragment(){
+class DiaryReadFragment : Fragment(){
     private lateinit var pdfButton: ImageButton
     private lateinit var moreButton: ImageButton
     private lateinit var rootView: View
@@ -46,8 +46,8 @@ class diaryRead_fragment : Fragment(){
         private const val REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
         private const val ARG_SELECTED_DATE = "selectedDate"
 
-        fun newInstance(selectedDate: Long): diaryRead_fragment {
-            val fragment = diaryRead_fragment()
+        fun newInstance(selectedDate: Long): DiaryReadFragment {
+            val fragment = DiaryReadFragment()
             val args = Bundle()
             args.putLong(ARG_SELECTED_DATE, selectedDate)
             fragment.arguments = args
