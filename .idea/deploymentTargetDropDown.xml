@@ -7,7 +7,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\parks\.android\avd\Pixel_6_Pro_API_30_2.avd" />
+            <value value="C:\Users\handa\.android\avd\Resizable_Experimental_API_34.avd" />
           </Key>
         </deviceKey>
       </Target>
@@ -15,5 +15,7 @@
     <timeTargetWasSelectedWithDropDown value="2023-09-08T08:17:52.254873600Z" />
     <!-- </targetSelectedWithDropDown>
     <timeTargetWasSelectedWithDropDown value="2023-09-06T04:09:17.368605100Z" /> -->
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2023-09-07T17:29:57.681187Z" />
   </component>
 </project>
