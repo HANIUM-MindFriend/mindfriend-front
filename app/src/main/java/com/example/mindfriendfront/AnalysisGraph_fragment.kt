@@ -128,6 +128,7 @@ class AnalysisGraph_fragment : Fragment() {
                 if (response.isSuccessful) {
                     val emoGraphResponse = response.body()
                     val emoGraphData = emoGraphResponse?.data?.graphStatistics
+                    val moodTrackerData = emoGraphResponse?.data?.moodTracker
 
                     emoGraphData?.let {
                         // 데이터를 업데이트합니다.
@@ -141,6 +142,68 @@ class AnalysisGraph_fragment : Fragment() {
                     }
 
                     updateChart()
+
+//                    무드트래커
+
+                    // 1부터 30까지의 숫자를 가지는 배열 생성
+                    val numbers = Array(30) { i -> (i + 1).toString() }
+
+                    // ArrayAdapter를 사용하여 GridView에 데이터 설정
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, numbers)
+                    gridView.adapter = adapter
+
+                    //각 칸마다 색깔 설정하기
+                    //일단 두 가지 색 변갈아서 나오게 짜뒀음
+                    val adapter2 = object : ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, numbers) {
+                        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                            val view = super.getView(position, convertView, parent) as TextView
+                            var bgColor = "#D3D3D3"
+                            Log.e("sdd",position.toString())
+
+                            moodTrackerData?.forEach {
+                                val calendar = Calendar.getInstance()
+                                calendar.time = it?.createdAt
+
+
+                                if (position == calendar.get(Calendar.DAY_OF_MONTH) ) {
+                                    if (it?.mainEmotion.equals("분노")){
+                                        bgColor = "#FF7F00"
+                                    }
+                                    else if (it?.mainEmotion.equals("혐오")){
+                                        bgColor = "#FF0000"
+                                    }
+                                    else if (it?.mainEmotion.equals("두려움")){
+                                        bgColor = "#A374DB"
+                                    }
+                                    else if (it?.mainEmotion.equals("행복")){
+                                        bgColor = "#FFC0CB"
+                                    }
+                                    else if (it?.mainEmotion.equals("중립")){
+                                        bgColor = "#FFFFFF"
+                                    }
+                                    else if (it?.mainEmotion.equals("슬픔")){
+                                        bgColor = "#50BCDF"
+                                    }
+                                    else{
+                                        bgColor = "#FFFF00"
+                                    }
+
+                                }
+
+                            }
+                            //Log.e(position.toString(), bgColor);
+                            view.setBackgroundColor(Color.parseColor(bgColor))
+                            view.textSize = 10f
+                            return view
+                        }
+                    }
+
+                    gridView.adapter = adapter
+                    gridView.adapter = adapter2
+
+
+
+
                 } else {
                     // 오류 처리
                     val errorBody = response.errorBody()?.string()
@@ -409,31 +472,11 @@ class AnalysisGraph_fragment : Fragment() {
         currentMonth=month
         return Pair(year, month)
     }
-
-
-    fun Moodtracker() {
-        // 1부터 30까지의 숫자를 가지는 배열 생성
-        val numbers = Array(30) { i -> (i + 1).toString() }
-
-        // ArrayAdapter를 사용하여 GridView에 데이터 설정
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, numbers)
-        gridView.adapter = adapter
-
-        //각 칸마다 색깔 설정하기
-        //일단 두 가지 색 변갈아서 나오게 짜뒀음
-        val adapter2 = object : ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, numbers) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getView(position, convertView, parent) as TextView
-                val bgColor = if (position % 2 == 0) "#FFBB5C" else "#FF9B50"
-                view.setBackgroundColor(Color.parseColor(bgColor))
-                view.textSize = 10f
-                return view
-            }
-        }
-
-        gridView.adapter = adapter
-        gridView.adapter = adapter2
-    }
+//
+//
+//    fun Moodtracker() {
+//
+//    }
 
 
 
