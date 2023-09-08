@@ -188,11 +188,11 @@ class Calendar_fragment : Fragment() {
         // readBtn 클릭 이벤트 설정
         readBtn.setOnClickListener {
             // readBtn 클릭 시 동작 수행
-            val diaryRead_fragment = diaryRead_fragment.newInstance(selectedDate)
+            val diaryReadFragment  = DiaryReadFragment.newInstance(selectedDate)
 
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.mainNaviFragmentContainer, diaryRead_fragment)
+                .replace(R.id.mainNaviFragmentContainer, diaryReadFragment )
                 .addToBackStack(null)
                 .commit()
 
