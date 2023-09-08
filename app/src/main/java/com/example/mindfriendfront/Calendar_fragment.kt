@@ -82,9 +82,8 @@ class Calendar_fragment : Fragment() {
                         readBtn.visibility = View.VISIBLE
                         writeBtn.visibility = View.GONE
                     } else {
-
-                        writeBtn.visibility = View.GONE
-                        readBtn.visibility = View.VISIBLE
+                        writeBtn.visibility = View.VISIBLE
+                        readBtn.visibility = View.GONE
                     }
 
 
