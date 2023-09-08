@@ -3,6 +3,7 @@ package com.example.mindfriendfront
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,19 @@ import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.data.Entry
+import com.example.mindfriendfront.data.DashboardGetResponse
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import java.util.Calendar
+import com.example.mindfriendfront.network.ApiServiceFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AnalysisGraph_fragment : Fragment() {
 
@@ -32,9 +40,17 @@ class AnalysisGraph_fragment : Fragment() {
     private var currentMonth=0
     private lateinit var gridView: GridView
 //    val (currentYear, currentMonth) = getCurrentYearAndMonth()
-
+//        그래프 표기 위한 수치
+private var angryN = 0.0f;
+    private var disgustN=0f;
+    private var fearN=0f;
+    private var happinessN=0f;
+    private var neutralN=0f;
+    private var  sadnessN=0f;
+    private var surpriseN=0f;
     var v: View? = null
-    var lineChart: LineChart? = null
+    var barChart: BarChart? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -44,6 +60,8 @@ class AnalysisGraph_fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_analysis_graph_fragment, container, false)
+        barChart = v!!.findViewById<View>(R.id.chart) as BarChart // 레이아웃에서 바차트 뷰 아이디로 변경해야 합니다.
+
         yymmTextView = v!!.findViewById(R.id.yymm)
         upButton = v!!.findViewById(R.id.upButton)
         downButton = v!!.findViewById(R.id.downButton)
@@ -74,24 +92,103 @@ class AnalysisGraph_fragment : Fragment() {
             updateYymmText()
         }
 
-        lineChart = v!!.findViewById<View>(R.id.chart) as LineChart
-        val entries: MutableList<Entry> = ArrayList()
-        entries.add(Entry(1f, 1f))
-        entries.add(Entry(2f, 2f))
-        entries.add(Entry(3f, 3f))
-        entries.add(Entry(4f, 4f))
-        entries.add(Entry(5f, 5f))
-        val dataSet = LineDataSet(entries, "Label")
-        dataSet.lineWidth = 4f //라인 두께
-        dataSet.circleRadius = 6f // 점 크기
-        dataSet.setCircleColor(Color.parseColor("#FFA1B4DC")) // 점 색깔
-        dataSet.setDrawCircleHole(true) // 원의 겉 부분 칠할거?
-        dataSet.color = Color.parseColor("#FFA1B4DC") // 라인 색깔
-        val lineData = LineData(dataSet)
-        lineChart!!.data = lineData
-        lineChart!!.invalidate()
+
+val yymm:String
+
+        val apiService = ApiServiceFactory.apiService
+        if (currentMonth<10){
+            yymm = "${currentYear}-0${currentMonth}"
+        }
+        else{
+            yymm = "${currentYear}-${currentMonth}"
+        }
+
+
+
+        apiService.getDashboard(yearMonth=yymm).enqueue(object : Callback<DashboardGetResponse> {
+
+            override fun onResponse(call: Call<DashboardGetResponse>, response: Response<DashboardGetResponse>) {
+                Log.e("Diarydate", yymm)
+
+                if (response.isSuccessful) {
+                    val emoGraphResponse = response.body()
+                    val emoGraphData = emoGraphResponse?.graphStatistics
+                    emoGraphData?.let {
+                        angryN = (it.angry).toFloat()
+                        disgustN = (it.disgust).toFloat()
+                        fearN = (it.fear).toFloat()
+                        happinessN = (it.happiness).toFloat()
+                        neutralN = (it.neutral).toFloat()
+                        sadnessN = (it.sadness).toFloat()
+                        surpriseN = (it.surprise).toFloat()
+                          }
+                } else {
+                    // 오류 처리
+                    val errorBody = response.errorBody()?.string()
+                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
+                    Log.e("API_RESPONSE", message)
+                    Toast.makeText(requireContext(), "오류가 발생했습니다. Error Code: "+response.code(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<DashboardGetResponse>, t: Throwable) {
+                // 네트워크 오류 처리
+                Log.e("API_RESPONSE", "네트워크 실패: ${t.message}")
+                Toast.makeText(requireContext(), "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+
+
+        val entries: MutableList<BarEntry> = ArrayList()
+        entries.add(BarEntry(0f, angryN, "angry"))
+        entries.add(BarEntry(1f, disgustN, "disgust"))
+        entries.add(BarEntry(2f, fearN, "fear"))
+        entries.add(BarEntry(3f, happinessN, "happiness"))
+        entries.add(BarEntry(4f, neutralN, "neutral"))
+        entries.add(BarEntry(4f, sadnessN, "sadness"))
+        entries.add(BarEntry(4f, surpriseN, "surprise"))
+        val dataSet = BarDataSet(entries, null) // 색 샘플 부분을 삭제
+
+        val colors = listOf(
+            Color.parseColor("#FFF59E"),
+            Color.parseColor("#FF9B7B"),
+            Color.parseColor("#9CD0FF"),
+            Color.parseColor("#C2EC67"),
+            Color.parseColor("#E2CCFF"),
+            Color.parseColor("#C2EC67"),
+            Color.parseColor("#FF9B7B")
+        )
+        dataSet.colors = colors
+
+        val barData = BarData(dataSet)
+        barChart!!.data = barData
+        val labels = listOf("화남", "역겨움", "공포", "행복","평온함", "슬픔","놀람")
+        dataSet.valueFormatter = IndexAxisValueFormatter(labels)
+
+        // Customize the chart appearance
+        barChart!!.apply {
+            // Disable grid lines
+            xAxis.setDrawGridLines(false)
+            axisLeft.setDrawGridLines(false)
+            axisRight.setDrawGridLines(false)
+
+            // Disable description label
+            description.isEnabled = false
+            legend.isEnabled = false
+            // Disable x-axis and y-axis labels
+            xAxis.isEnabled = false
+            axisLeft.isEnabled = false
+            axisRight.isEnabled = false
+            barData.barWidth = 0.4f
+            // Invalidate the chart to apply changes
+            invalidate()
+        }
+
         return v
     }
+
     private fun updateYymmText() {
         // TextView에 현재 연도와 월을 표시
         val yymmText = "${currentYear}년 ${currentMonth}월"
