@@ -1,5 +1,6 @@
 package com.example.mindfriendfront
 
+import DayInfo_fragment
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -38,6 +39,7 @@ import com.example.mindfriendfront.data.LoginResponse
 import com.example.mindfriendfront.data.UserLogin
 import com.example.mindfriendfront.data.UserSignUp
 import com.example.mindfriendfront.network.ApiServiceFactory
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -96,11 +98,14 @@ class Upload_fragment : Fragment() {
         val galleryImageButton: ImageButton = rootView.findViewById(R.id.gallery_button)
         val playerImageButton: ImageButton = rootView.findViewById(R.id.player_button)
         val uploadButton: ImageButton = rootView.findViewById(R.id.write_ib_upload)
+        val profileButton: CircleImageView = rootView.findViewById(R.id.circle_profile)
+
 
         val currentDate = Date()
 
-        val dateFormat = SimpleDateFormat("yyyy. MM. dd")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val formattedDate = dateFormat.format(currentDate)
+
 
 
         dateTextView.text = formattedDate
@@ -126,7 +131,20 @@ class Upload_fragment : Fragment() {
             }
         }
 
+        profileButton.setOnClickListener {
+            val dayInfoFragment = DayInfo_fragment.newInstance()
+            val bundle = Bundle()
+            bundle.putString("formattedDate", formattedDate)
+            dayInfoFragment.arguments = bundle
 
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(
+                R.id.mainNaviFragmentContainer,
+                dayInfoFragment
+            ) // R.id.fragmentContainer는 Fragment를 표시할 레이아웃의 ID입니다.
+            transaction.addToBackStack(null) // 필요에 따라 백 스택에 추가합니다.
+            transaction.commit()
+        }
 
 
         cameraImageButton.setOnClickListener {
@@ -365,7 +383,7 @@ class Upload_fragment : Fragment() {
                 if (response.isSuccessful) {
                     val singleResponse = response.body()
                     if (singleResponse != null) {
-                        Toast.makeText(requireContext(), diaryLine + ": " + singleResponse.data.emotion, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(requireContext(), diaryLine + ": " + singleResponse.data.emotion, Toast.LENGTH_SHORT).show()
                         if (singleResponse.data.emoIdx == 1){
                             //분노
                             Log.e("Emo", "angry")
