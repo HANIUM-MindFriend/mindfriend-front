@@ -77,7 +77,7 @@ class AnalysisGraph_fragment : Fragment() {
             Color.parseColor("#FF0000"),
             Color.parseColor("#A374DB"),
             Color.parseColor("#FFC0CB"),
-            Color.parseColor("#FFFFFF"),
+            Color.parseColor("#D3D3D3"),
             Color.parseColor("#50BCDF"),
             Color.parseColor("#FFFF00")
         )
@@ -159,7 +159,7 @@ class AnalysisGraph_fragment : Fragment() {
                     val adapter2 = object : ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, numbers) {
                         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                             val view = super.getView(position, convertView, parent) as TextView
-                            var bgColor = "#D3D3D3"
+                            var bgColor = "#FFFFFF"
                             Log.e("sdd",position.toString())
 
                             moodTrackerData?.forEach {
@@ -181,7 +181,7 @@ class AnalysisGraph_fragment : Fragment() {
                                         bgColor = "#FFC0CB"
                                     }
                                     else if (it?.mainEmotion.equals("중립")){
-                                        bgColor = "#FFFFFF"
+                                        bgColor = "#D3D3D3"
                                     }
                                     else if (it?.mainEmotion.equals("슬픔")){
                                         bgColor = "#50BCDF"
