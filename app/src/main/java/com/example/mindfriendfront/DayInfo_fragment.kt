@@ -128,11 +128,16 @@ class DayInfo_fragment : Fragment() {
 //                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
 //                    Log.e("API_RESPONSE", message)
 //                    Toast.makeText(requireContext(), "오류가 발생했습니다. Error Code: " + response.code(), Toast.LENGTH_SHORT).show()
-                    musicText.text = "Shake It Off - Taylor Swift"
-                    colorText.text = "#FF968A"
-                    emoText.text = "행복"
-                    missionText.text = "오늘을 기록해두는 건 어떨까요?"
-                    changeViewColor(colorView, "행복")
+//                    musicText.text = "Shake It Off - Taylor Swift"
+//                    colorText.text = "#FF968A"
+//                    emoText.text = "행복"
+//                    missionText.text = "오늘을 기록해두는 건 어떨까요?"
+//                    changeViewColor(colorView, "행복")
+                    musicText.text = "수고했어, 오늘도 - 옥상달빛"
+                    colorText.text = "#FFD8BE"
+                    emoText.text = "슬픔"
+                    missionText.text = "신나는 노래를 들어보세요"
+                    changeViewColor(colorView, "슬픔")
                 }
             }
 
