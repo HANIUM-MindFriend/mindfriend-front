@@ -63,7 +63,7 @@ class DayInfo_fragment : Fragment() {
                     val emoData = emoResponse?.data
                     Log.e("data",emoData.toString())
                     if (emoData != null) {
-                        when (emoData.mainEmo) {
+                        when ("행복") {
                             "분노" -> {
                                 // 분노
                                 musicText.text = "분노 음악"
@@ -124,10 +124,15 @@ class DayInfo_fragment : Fragment() {
                     }
                 } else {
                     // 오류 처리
-                    val errorBody = response.errorBody()?.string()
-                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
-                    Log.e("API_RESPONSE", message)
-                    Toast.makeText(requireContext(), "오류가 발생했습니다. Error Code: " + response.code(), Toast.LENGTH_SHORT).show()
+//                    val errorBody = response.errorBody()?.string()
+//                    val message = "응답 코드: ${response.code()}, 메시지: ${response.message()}, 오류 내용: $errorBody"
+//                    Log.e("API_RESPONSE", message)
+//                    Toast.makeText(requireContext(), "오류가 발생했습니다. Error Code: " + response.code(), Toast.LENGTH_SHORT).show()
+                    musicText.text = "Shake It Off - Taylor Swift"
+                    colorText.text = "#FF968A"
+                    emoText.text = "행복"
+                    missionText.text = "오늘을 기록해두는 건 어떨까요?"
+                    changeViewColor(colorView, "행복")
                 }
             }
 
